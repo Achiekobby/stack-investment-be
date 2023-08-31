@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 use App\Models\Project;
+use App\Models\OrganizationMember;
 
 class User extends Authenticatable
 {
@@ -55,5 +56,13 @@ class User extends Authenticatable
     //* Relationships
     public function projects(){
         return $this->hasMany(Project::class);
+    }
+
+    public function organizationMembers(){
+        return $this->hasMany(OrganizationMember::class,"user_id");
+    }
+
+    public function organizations(){
+        return $this->hasManyThrough(Organization::class,OrganizationMember::class,"user_id","id","id","organization_id");
     }
 }

@@ -151,4 +151,20 @@ class CrowdFundingController extends Controller
             return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
         }
     }
+
+    //TODO=> SHOW ALL OPEN PROJECTS
+    public function all_open_projects(){
+        try{
+            $projects = Project::query()->where([['project_status',"active"],["approval","approved"]])->get();
+            if(count($projects)===0){
+                return response()->json(['status'=>"failed","message"=>"No Approved Project Yet. Still Loading"],404);
+            }
+            else{
+                return response()->json(['status'=>"success","message"=>"Great, Here is a list of Approved Projects","projects"=>CrowdFundingProjectResource::collection($projects)],200);
+            }
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
 }

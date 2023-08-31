@@ -16,7 +16,7 @@ class OrganizationMember extends Model
         "role",
         "name",
         "email",
-        "phone",
+        "phone_number",
         "order_number",
         "amount_to_be_taken",
         "status",

@@ -16,15 +16,17 @@ return new class extends Migration
             $table->uuid("unique_id");
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->unsignedBigInteger('number_of_participants');
+            $table->unsignedBigInteger('number_of_participants')->nullable();
+            $table->string("title");
+            $table->string("description")->nullable();
             $table->string("cycle_period")->default("monthly");
-            $table->string('number_of_cycles');
-            $table->string('amount_per_cycle');
-            $table->string('amount_per_member');
+            $table->string('number_of_cycles')->nullable();
+            $table->string('amount_per_cycle')->nullable();
+            $table->string('amount_per_member')->nullable();
             $table->string('currency')->default("GHS");
             $table->datetime("commencement_date")->nullable();
-            $table->enum('status',['active','completed','aborted'])->default('active');
-            $table->json("order_of_members")->nullable();
+            $table->enum('status',['active','inactive','completed','aborted'])->default('inactive');
+            $table->string("approval")->default("pending");
             $table->timestamps();
         });
     }

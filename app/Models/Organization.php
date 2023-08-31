@@ -13,15 +13,17 @@ class Organization extends Model
     protected $fillable = [
         "unique_id",
         "user_id",
+        "title",
+        "description",
         "number_of_participants",
         "cycle_period",
         "number_of_cycles",
         "amount_per_cycle",
+        "amount_per_member",
         "currency",
         "commencement_date",
         "status",
-        "order_of_members",
-        "order_of_members",
+        "approval",
     ];
 
     protected $guarded = ["created_at","updated_at"];
@@ -29,8 +31,8 @@ class Organization extends Model
     protected $casts = ["order_of_members"=>"array"];
 
     //* Relationships
-    public function organization_members(){
-        return $this->hasMany(OrganizationMember::class);
+    public function members(){
+        return $this->hasMany(OrganizationMember::class,"organization_id");
     }
 
     public function user(){

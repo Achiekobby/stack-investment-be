@@ -21,4 +21,7 @@ Route::group(["prefix"=>"user/project"], function(){
 
     //Tip:: Remove a project created by a user
     Route::delete('remove/{unique_id}',[CrowdFundingController::class,"remove"]);
+
+    //Tip:: Extract all the projects which are open for donation
+    Route::get("open",[CrowdFundingController::class,"all_open_projects"]);
 });
