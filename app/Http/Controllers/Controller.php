@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- * title="Sparks-Hub Private API Documentation",
+ * title="Stacks-Investment-Hub Private API Documentation",
  * version="1.0.0",
  * )
         * @OA\Post(
