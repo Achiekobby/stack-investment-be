@@ -60,7 +60,7 @@ class UserAuthenticationController extends Controller
             $user = User::query()->create($this->format_registration_data($request));
             if($user){
                  //* Generating the access token
-                $access_token = $user->createToken('sparks_user_access_token')->accessToken;
+                $access_token = $user->createToken('stack_user_access_token')->accessToken;
 
                 //* send email verification code to user email
                 $email_already_verified = User::query()->where([['email',$user->email],['email_verified_at','!=',null]])->first();
@@ -81,7 +81,7 @@ class UserAuthenticationController extends Controller
                 return response()->json(
                     [
                         'status'        =>'success',
-                        'message'       =>'Welcome. You have now successfully signed up for Sparks-Hub',
+                        'message'       =>'Welcome. You have now successfully signed up for Stacks-Investment-Hub',
                         "user"          =>new UserDetailsResource(User::where('id',$user->id)->first()),
                         "access_token"  =>$access_token
                     ],
@@ -122,7 +122,7 @@ class UserAuthenticationController extends Controller
                 return response()->json(['status'=>'failed','message'=>'Your email has already been verified!!'],400);
             }
             $user->update(['email_verified_at'=>Carbon::now()->format('Y-m-d H:i:s'),'email_verification_code'=>null]);
-            $token = $user->createToken('sparks_user_access_token')->accessToken;
+            $token = $user->createToken('stack_user_access_token')->accessToken;
             return response()->json([
                 'status'    =>'success',
                 'message'   =>'You have successfully verified your email',

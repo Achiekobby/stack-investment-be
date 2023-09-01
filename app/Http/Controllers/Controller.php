@@ -38,7 +38,7 @@ use Illuminate\Routing\Controller as BaseController;
         *          description="Register Successfully",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="message",type="string", example="Welcome. You have now successfully signed up for Sparks-Hub"),
+        *              @OA\Property(property="message",type="string", example="Welcome. You have now successfully signed up for Stacks-Hub"),
         *              @OA\Property(property="user",type="object", example="{id:1,.....}"),
         *           ),
         *       ),

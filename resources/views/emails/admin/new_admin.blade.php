@@ -102,7 +102,7 @@
                             <tr>
                                 <td style="padding:0 0 10px">
                                     <a href="#">
-                                        <img src="" alt="sparks-hub-logo" title="Logo">
+                                        <img src="" alt="stacks-hub-logo" title="Logo">
                                     </a>
                                 </td>
                             </tr>
@@ -125,7 +125,7 @@
                 <td style="padding: 0 22px">
                     <p style="font-size:20px; text-align:left;font-weight:500; color:#4a4a4a;margin-bottom:10px ">Hello {{ $data['name'] }} !</p>
                     {{-- <p style="font-size:24px; text-align:center;font-weight:700; color:#4a4a4a;margin-bottom:10px ">Hello John Doe !</p> --}}
-                    <p style="font-size:14px; text-align:left; font-weight:500; color:#4a4a4a; line-height:1.6rem; ">You have been made an {{  $data['role'] }} in sparks-hub application. Please refer to the details below to login into the admin portal</p>
+                    <p style="font-size:14px; text-align:left; font-weight:500; color:#4a4a4a; line-height:1.6rem; ">You have been made an {{  $data['role'] }} in stacks-hub application. Please refer to the details below to login into the admin portal</p>
                     {{-- <p style="font-size:14px; text-align:center; font-weight:500; color:#4a4a4a; ">Your Package has been shipped and it is on its way.</p> --}}
                     {{-- <p style="font-size:14px; font-weight:500;line-height:1.2rem; color:#4a4a4a; ">We understand how important it is for your shipment to arrive on time and in good condition, and we want to assure you
                         that we have taken all necessary measures to ensure a safe and timely delivery..</p> --}}
@@ -162,7 +162,7 @@
         <table width="100%" style="text-align: center; padding:10px 0;">
             <tr>
                 <td style="padding:0 22px 0px">
-                    <a style="text-decoration:none; color:#4a4a4a" href="#"><h4 style="font-size: 14px">Thank you for using <span style="color:#4a4a4a; fontw-weight:700;text-tranform:uppercase">sparks-hub</span></h4>
+                    <a style="text-decoration:none; color:#4a4a4a" href="#"><h4 style="font-size: 14px">Thank you for using <span style="color:#4a4a4a; fontw-weight:700;text-tranform:uppercase">stacks-investment-hub</span></h4>
                     </a>
                     <p style="color:#e85d04; font-weight:600; font-size:14px"></p>
                 </td>

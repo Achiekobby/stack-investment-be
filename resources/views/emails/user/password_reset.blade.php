@@ -99,7 +99,7 @@
                             <tr>
                                 <td style="padding:0 0 10px">
                                     <a href="#">
-                                        <img src="" alt="Sparks-Hub" title="Logo">
+                                        <img src="" alt="Stacks-Investment-Hub" title="Logo">
                                     </a>
                                 </td>
                             </tr>
