@@ -582,7 +582,7 @@ use Illuminate\Routing\Controller as BaseController;
         *          description="Successfully retrieved data from the backend about that particular crowdfunding project",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="message",type="string", example="Your new project is under review. Please check back within 24 hours for approval status"),
+        *              @OA\Property(property="message",type="string", example="project:{uuid:5d92d319..., title:...}"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -590,7 +590,7 @@ use Illuminate\Routing\Controller as BaseController;
         *          description="Error during the processing of the request=>Bad request",
                     @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="failed"),
-        *              @OA\Property(property="project",type="string", example="project:{uuid:5d92d319..., title:...}"),
+        *              @OA\Property(property="project",type="string", example="Sorry, Data could not be retrieved"),
         *           ),
         *       ),
         *       @OA\Response(
@@ -709,6 +709,260 @@ use Illuminate\Routing\Controller as BaseController;
         *      @OA\Response(response=500, description="Internal server error"),
         * ),
                 *),
+
+        * @OA\Post(
+        * path="/api/v1/user/organization/create",
+        * operationId="UserCreateOrganization",
+        * tags={"P2P Organization Operations"},
+        * summary="User P2P organization creation",
+        * description="This API allows the user to create a P2P organization  and collate funds from every individual who is added of a cycle period",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"title", "description","cycle_period","amount_per_member","start_date"},
+        *               @OA\Property(property="title", type="string",example="Sample P2P organization"),
+        *               @OA\Property(property="description", type="text",example="Sample Description for the P2P organization"),
+        *               @OA\Property(property="cycle_period", type="string",example="Weekly/Monthly/Quarterly/Midyear/Yearly"),
+        *               @OA\Property(property="amount_per_member", type="string",example="100.00"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Added new P2P organization  project Successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="organization",type="string", example="A JSON Object of the details for the organization"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User not found",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
+        * @OA\Get(
+        * path="/api/v1/user/organization/show/all",
+        * operationId="ExtractP2POrganizationProjects",
+        * tags={"P2P Organization Operations"},
+        * summary="Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
+        * description="Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="user_organizations",type="string", example="user_organizations:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/user/organization/active/all",
+        * operationId="ExtractActiveP2POrganizationProjects",
+        * tags={"P2P Organization Operations"},
+        * summary="Extract all active P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
+        * description="Extract all active P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully Extract all P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="user_organizations",type="string", example="user_organizations:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/user/organization/show/{unique_id_of_p2p_organization}",
+        * operationId="ExtractDetailsOfP2POrganization",
+        * tags={"P2P Organization Operations"},
+        * summary="User P2P Organization details extraction using the unique id",
+        * description="This API allows the user to extract the details of a P2P organization",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved data from the backend about that particular  P2P organization",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="organization",type="string", example="Details of the particular organization extracted in JSON format"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Patch(
+        * path="/api/v1/user/organization/edit/{unique_id of the P2P organization to be edited}",
+        * operationId="UserUpdateOrganization",
+        * tags={"P2P Organization Operations"},
+        * summary="User P2P organization creation",
+        * description="This API allows the user to update the details a P2P organization",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"title", "description","cycle_period","amount_per_member","start_date"},
+        *               @OA\Property(property="title", type="string",example="Sample P2P organization"),
+        *               @OA\Property(property="description", type="text",example="Sample Description for the P2P organization"),
+        *               @OA\Property(property="cycle_period", type="string",example="Weekly/Monthly/Quarterly/Midyear/Yearly"),
+        *               @OA\Property(property="amount_per_member", type="string",example="100.00"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Updated new P2P organization  project Successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Successfully updated the details of this P2P organization"),
+        *              @OA\Property(property="organization",type="string", example="A JSON Object of the details for the organization"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User not found",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Delete(
+        * path="/api/v1/user/project/{unique_id of P2P organization to be deleted}",
+        * operationId="RemoveP2POrganization",
+        * tags={"P2P Organization Operations"},
+        * summary="Remove P2P organization",
+        * description="This API allows the logged user to remove P2P organization created by them but has not been initiated or approved. Meaning this organization has to be inactive and must have been created by the logged in user",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully removed P2P organization initiated by the logged in user",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Great, you have successfully removed this organization"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="You are not the team leader of the organization you are trying to remove"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+        *),
 
         */
 
