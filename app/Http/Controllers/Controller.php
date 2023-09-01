@@ -459,6 +459,48 @@ use Illuminate\Routing\Controller as BaseController;
         *      @OA\Response(response=500, description="Internal server error"),
         * ),
                 *),
+                 * @OA\Post(
+        * path="/api/v1/admin/change_admin_state/{unique_id of user}",
+        * operationId="SuperAdminChangeUserState",
+        * tags={"Admin Authentication"},
+        * summary="Change the The Role of a A user",
+        * description="This API is to enable only a super admin to change the role of other users including other super admins",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"role"},
+        *               @OA\Property(property="role", type="string",example="super_admin/admin/regular"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="User role change Successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="You have successfully changed the role of user"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="When the user trying to add another user is not a super admin",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, only a super admin can update the role new admins/super-admins"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),           *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
         * @OA\Post(
         * path="/api/v1/user/project/create",
         * operationId="UserCreateProjectForDonation",

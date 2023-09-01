@@ -13,6 +13,7 @@ use App\Http\Resources\Admin\AdminDetailsResource;
 
 //* Models
 use App\Models\Admin;
+use App\Models\User;
 
 //* Notification
 use App\Notifications\Admin\NewAdminNotification;
@@ -101,6 +102,92 @@ class AdminAuthenticationController extends Controller
                 );
             }
             return response()->json(['status'=>'failed','message'=>'Sorry, Wrong Credentials'],400);
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
+    //TODO=> Changing a regular users state to Admin and vice versa
+    public function change_user_admin_status($unique_id, Request $request){
+        try{
+
+            $rules = ["role"=>"required|string"];
+            $validation = Validator::make(request()->all(),$rules);
+            if($validation->fails()){
+                return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],422);
+            }
+
+            $admin = auth()->guard("api")->user();
+            if($admin->role !== "super_admin"){
+                return response()->json(['status'=>"failed","message"=>"Sorry, only an Admin/Super-Admin can access this functionality"],403);
+            }
+
+            //* Extract the users the admin wants to change the status of.
+            $user = User::where("uuid",$unique_id)->first();
+            $role = $user->role;
+            if(!$user){
+                return response()->json(['status'=>'failed',"message"=>"User not found"],404);
+            }
+
+            if($request->role === "admin"){
+                if($user->role === "admin"){
+                    return response()->json(['status'=>'failed','message'=>'Sorry, user is already an Admin'],400);
+                }
+                else{
+                    $user->update(['role'=>"admin"]);
+                    $message= "";
+                    if($role === "regular"){
+                        $message = "User successfully made into an Admin";
+                    }
+                    if($role === "super_admin"){
+                        $message = "Successfully reduced User permissions from Super-Admin to Admin";
+                    }
+                    return response()->json(['status'=>'success','message'=>$message],200);
+                }
+            }
+            if($request->role === "super_admin"){
+                if($admin->role !== "super_admin"){
+                    return response()->json(['status'=>"failed","message"=>"Sorry, only an Super-Admin can change a Role to a Super Admin"],403);
+                }
+                else{
+                    if($user->role === "super_admin"){
+                        return response()->json(['status'=>'failed','message'=>'Sorry, user is already a Super Admin'],400);
+                    }
+                    else{
+                        $user->update(['role'=>"super_admin"]);
+                        $message= "";
+                        if($role === "regular"){
+                            $message = "User successfully made into an Super-Admin";
+                        }
+                        if($role === "admin"){
+                            $message = "Successfully upgraded User permissions from Admin to Super-Admin";
+                        }
+                        return response()->json(['status'=>'success','message'=>$message],200);
+                        // return response()->json(['status'=>'success','message'=>'You have successfully revoked a user\'s Admin privileges!'],200);
+                    }
+                }
+            }
+            if($request->role === "regular"){
+                if($admin->role !== "super_admin"){
+                    return response()->json(['status'=>"failed","message"=>"Sorry, only a Super-Admin can change an User Roles"],403);
+                }
+                else{
+                    if($user->role === "regular"){
+                        return response()->json(['status'=>'failed','message'=>'Sorry, user is already a Regular User of the Application'],400);
+                    }
+                    else{
+                        $user->update(['role'=>"regular"]);
+                        $message= "";
+                        if($role === "super_admin"){
+                            $message = "Super-Admin has been made into a Regular User Successfully";
+                        }
+                        if($role === "admin"){
+                            $message = "Admin has been made into a Regular User Successfully";
+                        }
+                        return response()->json(['status'=>'success','message'=>$message],200);
+                    }
+                }
+            }
         }catch(\Exception $e){
             return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
         }

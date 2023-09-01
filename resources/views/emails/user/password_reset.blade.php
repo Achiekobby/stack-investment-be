@@ -155,7 +155,7 @@
         <table width="100%" style="text-align: center; padding:10px 0;">
             <tr>
                 <td style="padding:0 22px 0px">
-                    <a style="text-decoration:none; color:#4a4a4a" href="#"><h4 style="font-size: 14px">Thank you for using <span style="color:#4a4a4a; fontw-weight:700;text-tranform:uppercase">Sparks-Hub</span></h4>
+                    <a style="text-decoration:none; color:#4a4a4a" href="#"><h4 style="font-size: 14px">Thank you for using <span style="color:#4a4a4a; fontw-weight:700;text-tranform:uppercase">Stacks-Investment-Hub</span></h4>
                     </a>
                     {{-- <p style="color:#e85d04; font-weight:600; font-size:14px">Making Transport of goods easy</p> --}}
                 </td>

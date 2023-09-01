@@ -121,7 +121,7 @@
             <tr>
                 <td style="padding: 0 22px">
                     <p style="font-size:20px; text-align:left;font-weight:500; color:#4a4a4a;margin-bottom:10px ">Hello {{ $data['name'] }} !</p>
-                    <p style="font-size:14px; text-align:left; font-weight:500; color:#4a4a4a; line-height:1.6rem; ">Welcome to Sparks-Hub. We need a little more information from you to complete your registration.</p>
+                    <p style="font-size:14px; text-align:left; font-weight:500; color:#4a4a4a; line-height:1.6rem; ">Welcome to Stacks-Investment-Hub. We need a little more information from you to complete your registration.</p>
                     <p style="font-size:14px; text-align:left; font-weight:500; color:#4a4a4a; line-height:1.6rem; ">Please use the code provided below to complete your registration.</p>
                 </td>
             </tr>
@@ -155,7 +155,7 @@
         <table width="100%" style="text-align: center; padding:10px 0;">
             <tr>
                 <td style="padding:0 22px 0px">
-                    <a style="text-decoration:none; color:#4a4a4a" href="#"><h4 style="font-size: 14px">Thank you for using <span style="color:#4a4a4a; fontw-weight:700;text-tranform:uppercase">Sparks-Hub</span></h4>
+                    <a style="text-decoration:none; color:#4a4a4a" href="#"><h4 style="font-size: 14px">Thank you for using <span style="color:#4a4a4a; fontw-weight:700;text-tranform:uppercase">Stacks-Investment-Hub</span></h4>
                     </a>
                     {{-- <p style="color:#e85d04; font-weight:600; font-size:14px">Making Transport of goods easy</p> --}}
                 </td>
