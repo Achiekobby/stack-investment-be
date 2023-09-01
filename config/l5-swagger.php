@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Sparks-Hub',
+                'title' => 'Stacks-Investment-Hub',
             ],
 
             'routes' => [
