@@ -459,6 +459,256 @@ use Illuminate\Routing\Controller as BaseController;
         *      @OA\Response(response=500, description="Internal server error"),
         * ),
                 *),
+        * @OA\Post(
+        * path="/api/v1/user/project/create",
+        * operationId="UserCreateProjectForDonation",
+        * tags={"Crowdfunding Operations"},
+        * summary="User crowdfunding project creation",
+        * description="This API allows the user to create a project and solicit for funds from others users",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"uuid", "title","description","amount"},
+        *               @OA\Property(property="uuid", type="string", example="81a12b6e-1be0..."),
+        *               @OA\Property(property="title", type="string",example="Sample Project"),
+        *               @OA\Property(property="description", type="text",example="Sample Description"),
+        *               @OA\Property(property="amount", type="string",example="100.00"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Added new Crowdfunding project Successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Your new project is under review. Please check back within 24 hours for approval status"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User not found",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+        * @OA\Patch(
+        * path="/api/v1/user/project/update/{unique_id_of_crowdfunding_project}",
+        * operationId="UserUpdateProjectForDonation",
+        * tags={"Crowdfunding Operations"},
+        * summary="User crowdfunding project updating",
+        * description="This API allows the user to update a project and solicit for funds from others users",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"uuid", "title","description","amount"},
+        *               @OA\Property(property="uuid", type="string", example="81a12b6e-1be0...for the logged in"),
+        *               @OA\Property(property="title", type="string",example="Sample Project"),
+        *               @OA\Property(property="description", type="text",example="Sample Description"),
+        *               @OA\Property(property="amount", type="string",example="100.00"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Added new Crowdfunding project Successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Your new project is under review. Please check back within 24 hours for approval status"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User not found",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+                                *),
+        * @OA\Get(
+        * path="/api/v1/user/project/show/{unique_id_of_crowdfunding_project}",
+        * operationId="ExtractDetailsOfProjectForDonation",
+        * tags={"Crowdfunding Operations"},
+        * summary="User crowdfunding project details extraction using the unique id",
+        * description="This API allows the user to extract the details of a crowdfunding project",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved data from the backend about that particular crowdfunding project",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Your new project is under review. Please check back within 24 hours for approval status"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="project:{uuid:5d92d319..., title:...}"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/user/project/all",
+        * operationId="ExtractAllProjectForDonation",
+        * tags={"Crowdfunding Operations"},
+        * summary="All User crowdfunding projects",
+        * description="This API allows the user to extract all the details of every crowdfunding project which has been approved",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved all the crowdfunding projects initiated by the logged in user",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="projects",type="string", example="projects:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Delete(
+        * path="/api/v1/user/project/{unique_id of crowdfunding project to be deleted}",
+        * operationId="RemoveProjectForDonation",
+        * tags={"Crowdfunding Operations"},
+        * summary="Remove crowdfunding project",
+        * description="This API allows the logged user to remove crowdfunding project which has been initiated by them",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully removed crowdfunding project initiated by the logged in user",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Great, you have successfully removed this project"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="The project you are trying to remove does not belong to you"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/user/project/open",
+        * operationId="ExtractAllOpenProjectForDonation",
+        * tags={"Crowdfunding Operations"},
+        * summary="crowdfunding projects that are active and open to the public for donations",
+        * description="This API allows the pulling of all crowdfunding projects which are active and open to the public for donations",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved all the open crowdfunding projects",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="projects",type="string", example="projects:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
 
         */
 
