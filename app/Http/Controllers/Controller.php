@@ -1006,6 +1006,87 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
         *),
 
+
+        * @OA\Get(
+        * path="/api/v1/user/organization/search_users",
+        * operationId="SearchRegisteredUsersForP2POrganization",
+        * tags={"P2P Organization Operations"},
+        * summary="Searching through all registered users to enable the team leader add members to their organizations",
+        * description="Searching through all registered users to enable the team leader add members to their organizations",
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved registered users after the search to select the suitable one for the organization",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="user",type="string", example={"user:[]"}),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
+        * @OA\Post(
+        * path="/api/v1/user/organization/member/add/{unique_id_of_p2p_organization}",
+        * operationId="AddNewMemberToP2POrganization",
+        * tags={"P2P Organization Operations"},
+        * summary="Adding new member to the P2P Organization specified by the unique id provided",
+        * description="This API allows the team leader of a P2P Organization to add a new member to an organization",
+        * @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"member_uuid"},
+        *               @OA\Property(property="member_uuid", type="string",example="55970a2d-cc..."),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully added a new member to the P2P organization by the team leader",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="organization",type="string", example="Great, new member has been added to this organization"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
         */
 
 class Controller extends BaseController

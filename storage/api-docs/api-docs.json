@@ -2272,6 +2272,179 @@
                     }
                 }
             }
+        },
+        "/api/v1/user/organization/search_users": {
+            "get": {
+                "tags": [
+                    "P2P Organization Operations"
+                ],
+                "summary": "Searching through all registered users to enable the team leader add members to their organizations",
+                "description": "Searching through all registered users to enable the team leader add members to their organizations",
+                "operationId": "SearchRegisteredUsersForP2POrganization",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved registered users after the search to select the suitable one for the organization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "user": {
+                                            "type": "string",
+                                            "example": [
+                                                "user:[]"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/organization/member/add/{unique_id_of_p2p_organization}": {
+            "post": {
+                "tags": [
+                    "P2P Organization Operations"
+                ],
+                "summary": "Adding new member to the P2P Organization specified by the unique id provided",
+                "description": "This API allows the team leader of a P2P Organization to add a new member to an organization",
+                "operationId": "AddNewMemberToP2POrganization",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "member_uuid"
+                                ],
+                                "properties": {
+                                    "member_uuid": {
+                                        "type": "string",
+                                        "example": "55970a2d-cc..."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully added a new member to the P2P organization by the team leader",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "organization": {
+                                            "type": "string",
+                                            "example": "Great, new member has been added to this organization"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     }
 }
