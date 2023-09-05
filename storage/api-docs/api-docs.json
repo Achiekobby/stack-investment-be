@@ -2445,6 +2445,512 @@
                     }
                 }
             }
+        },
+        "/api/v1/admin/projects/all": {
+            "get": {
+                "tags": [
+                    "Admin Operations"
+                ],
+                "summary": "Extracting all the crowdfunding projects",
+                "description": "Extracting all the crowdfunding projects to be displayed on the dashboard",
+                "operationId": "AllProjectsForAdminDashboard",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved all the crowdfunding projects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "projects": {
+                                            "type": "string",
+                                            "example": [
+                                                "projects:[]"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/approve/project/{unique_id of the crowdfunding project}": {
+            "get": {
+                "tags": [
+                    "Admin Operations"
+                ],
+                "summary": "Approving the specified crowdfunding project",
+                "description": "This enables the admin to approve the crowdfunding project",
+                "operationId": "ApproveProject",
+                "responses": {
+                    "200": {
+                        "description": "Successfully approved a specified crowdfunding project",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You successfully approved this crowdfunding project"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/reject/project": {
+            "post": {
+                "tags": [
+                    "Admin Operations"
+                ],
+                "summary": "Reject a specified Crowdfunding Project",
+                "description": "This API allows the admin or super admin to reject a specified Crowdfunding Project",
+                "operationId": "RejectCrowdfundingProject",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "unique_id",
+                                    "reason"
+                                ],
+                                "properties": {
+                                    "unique_id": {
+                                        "type": "string",
+                                        "example": "55970a2d-cc..."
+                                    },
+                                    "reason": {
+                                        "type": "string",
+                                        "example": "Reason for the rejection of the crowdfunding project"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully rejected specified crowdfunding project",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully rejected this crowdfunding project"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/organizations/all": {
+            "get": {
+                "tags": [
+                    "Admin Operations"
+                ],
+                "summary": "Extracting all the organizations",
+                "description": "Extracting all the P2P organizations to be displayed on the dashboard",
+                "operationId": "AllOrganizationsForAdminDashboard",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved all the P2P organization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "organizations": {
+                                            "type": "string",
+                                            "example": [
+                                                "organizations:[]"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/approve/organization/{unique_id of the P2P organization}": {
+            "get": {
+                "tags": [
+                    "Admin Operations"
+                ],
+                "summary": "Approving the specified P2P Organization",
+                "description": "This enables the admin to approve the P2P Organization",
+                "operationId": "ApproveP2POrganization",
+                "responses": {
+                    "200": {
+                        "description": "Successfully approved a specified P2P Organization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You successfully approved this P2P organization"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/reject/organization": {
+            "post": {
+                "tags": [
+                    "Admin Operations"
+                ],
+                "summary": "Reject a specified P2P Organization",
+                "description": "This API allows the admin or super admin to reject a specified P2P Organization",
+                "operationId": "RejectP2POrganization",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "unique_id",
+                                    "reason"
+                                ],
+                                "properties": {
+                                    "unique_id": {
+                                        "type": "string",
+                                        "example": "55970a2d-cc..."
+                                    },
+                                    "reason": {
+                                        "type": "string",
+                                        "example": "Reason for the rejection of the P2P Organization"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully rejected specified crowdfunding project",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully rejected this P2P Organization"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Error, Bad Request initiated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     }
 }

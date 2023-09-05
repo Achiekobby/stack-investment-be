@@ -257,13 +257,9 @@ class OrganizationController extends Controller
                 return response()->json(['status'=>"failed","message"=>"Sorry, user must be logged in to perform this function"],404);
             }
 
-            $organization_team_leader = OrganizationMember::query()->where("organization_id",$organization->id)
-                                                                    ->where("user_id",$team_leader->id)
-                                                                    ->where("role","team_leader")
-                                                                    ->first();
-
-            if($organization_team_leader->user_id === $member->id) {
-                return response()->json(['status'=>'failed','message'=>"Sorry, you are already the team leader of this organization"],400);
+            $member_ids = OrganizationMember::query()->where("organization_id",$organization->id)->pluck('user_id')->toArray();
+            if(in_array($member->id, $member_ids)){
+                return response()->json(['status'=>'failed','message'=>"Sorry, you have already added this user as a member of this organization!!"],400);
             }
 
             if($organization->user_id !== $team_leader->id){
@@ -286,6 +282,7 @@ class OrganizationController extends Controller
             ]);
 
             if($new_member){
+                $organization->update(['number_of_participants'=>$organization->number_of_participants + 1]);
                 return response()->json(['status'=>"success","message"=>"Great, new member has been added to this organization"],200);
             }
             else{

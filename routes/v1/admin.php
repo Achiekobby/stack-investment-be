@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Route;
 //* AuthControllers
 use App\Http\Controllers\Auth\AdminAuthenticationController;
 
+//* AdminControllers
+use App\Http\Controllers\Admin\AdminCrowdfundingOperationsController;
+use App\Http\Controllers\Admin\AdminOrganizationController;
+
+
+
 Route::group(['prefix'=>'admin'],function(){
 
     // Tip:: Register a new user as an admin
@@ -18,7 +24,25 @@ Route::group(['prefix'=>'admin'],function(){
 
     //Tip:: reset admin password
 
-    //Tip:: Password code resend for new admin
+    //Tip:: Password code resend for new
+
+    //Tip:: List all the crowdfunding projects
+    Route::get("projects/all",[AdminCrowdfundingOperationsController::class,"list_projects"]);
+
+    //Tip:: Approving crowdfunding project
+    Route::get("approve/project/{unique_id}",[AdminCrowdfundingOperationsController::class, 'approve_project']);
+
+    //Tip:: Rejecting crowdfunding project
+    Route::post("reject/project",[AdminCrowdfundingOperationsController::class, 'reject_project']);
+
+    //Tip:: List all the organization projects
+    Route::get("organizations/all",[AdminOrganizationController::class,"list_organizations"]);
+
+    //Tip:: Approving organization project
+    Route::get("approve/organization/{unique_id}",[AdminOrganizationController::class, 'approve_organization']);
+
+    //Tip:: Rejecting organization project
+    Route::post("reject/organization",[AdminOrganizationController::class, 'reject_organization']);
 
 });
 ?>

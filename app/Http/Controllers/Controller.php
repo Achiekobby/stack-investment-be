@@ -1087,6 +1087,237 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
 
+
+        * @OA\Get(
+        * path="/api/v1/admin/projects/all",
+        * operationId="AllProjectsForAdminDashboard",
+        * tags={"Admin Operations"},
+        * summary="Extracting all the crowdfunding projects",
+        * description="Extracting all the crowdfunding projects to be displayed on the dashboard",
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved all the crowdfunding projects",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="projects",type="string", example={"projects:[]"}),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+        * @OA\Get(
+        * path="/api/v1/admin/approve/project/{unique_id of the crowdfunding project}",
+        * operationId="ApproveProject",
+        * tags={"Admin Operations"},
+        * summary="Approving the specified crowdfunding project",
+        * description="This enables the admin to approve the crowdfunding project",
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully approved a specified crowdfunding project",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="You successfully approved this crowdfunding project"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
+        * @OA\Post(
+        * path="/api/v1/admin/reject/project",
+        * operationId="RejectCrowdfundingProject",
+        * tags={"Admin Operations"},
+        * summary="Reject a specified Crowdfunding Project",
+        * description="This API allows the admin or super admin to reject a specified Crowdfunding Project",
+        * @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"unique_id","reason"},
+        *               @OA\Property(property="unique_id", type="string",example="55970a2d-cc..."),
+        *               @OA\Property(property="reason", type="string",example="Reason for the rejection of the crowdfunding project"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully rejected specified crowdfunding project",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Successfully rejected this crowdfunding project"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
+
+        * @OA\Get(
+        * path="/api/v1/admin/organizations/all",
+        * operationId="AllOrganizationsForAdminDashboard",
+        * tags={"Admin Operations"},
+        * summary="Extracting all the organizations",
+        * description="Extracting all the P2P organizations to be displayed on the dashboard",
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved all the P2P organization",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="organizations",type="string", example={"organizations:[]"}),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+        * @OA\Get(
+        * path="/api/v1/admin/approve/organization/{unique_id of the P2P organization}",
+        * operationId="ApproveP2POrganization",
+        * tags={"Admin Operations"},
+        * summary="Approving the specified P2P Organization",
+        * description="This enables the admin to approve the P2P Organization",
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully approved a specified P2P Organization",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="You successfully approved this P2P organization"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
+        * @OA\Post(
+        * path="/api/v1/admin/reject/organization",
+        * operationId="RejectP2POrganization",
+        * tags={"Admin Operations"},
+        * summary="Reject a specified P2P Organization",
+        * description="This API allows the admin or super admin to reject a specified P2P Organization",
+        * @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"unique_id","reason"},
+        *               @OA\Property(property="unique_id", type="string",example="55970a2d-cc..."),
+        *               @OA\Property(property="reason", type="string",example="Reason for the rejection of the P2P Organization"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully rejected specified crowdfunding project",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Successfully rejected this P2P Organization"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Error, Bad Request initiated"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
         */
 
 class Controller extends BaseController

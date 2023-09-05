@@ -80,6 +80,7 @@ class CrowdFundingController extends Controller
                 "title"             =>$title,
                 "description"       =>$description,
                 "amount_requested"  =>number_format((float)$amount,2,'.',''),
+                "approval"          =>"pending"
             ]);
             if($project_update){
                 return response()->json(['status'=>"success","message"=>"Your project has been updated."],201);
