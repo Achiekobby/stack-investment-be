@@ -132,6 +132,24 @@ class CrowdFundingController extends Controller
         }
     }
 
+    //TODO =>API FOR PENDING APPROVAL
+    public function pending_project(){
+        try{
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>"User not found"],404);
+            }
+            $projects = $user->projects()->where([['user_id',$user->id],['approval','pending']])->get();
+            if(count($projects)===0){
+                return response()->json(['status'=>'failed','message'=>'Sorry, User has not created any project yet!!'],404);
+            }
+            return response()->json(['status'=>'success','pending_projects'=>CrowdFundingProjectResource::collection($projects)],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
 
     //TODO=> Show a specific project details
     public function remove($unique_id){

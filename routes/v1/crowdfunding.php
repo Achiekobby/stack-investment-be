@@ -24,4 +24,7 @@ Route::group(["prefix"=>"user/project"], function(){
 
     //Tip:: Extract all the projects which are open for donation
     Route::get("open",[CrowdFundingController::class,"all_open_projects"]);
+
+    //Tip:: Extract all pending project for a user
+    Route::get('pending',[CrowdFundingController::class,"pending_project"]);
 });
