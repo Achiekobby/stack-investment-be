@@ -18,7 +18,7 @@ class CategoryResource extends JsonResource
             'id'=>$this->id,
             'category'=>$this->category,
             'description'=>$this->description,
-            'image'=>$this->image
+            'image'=>asset('uploads')."/".$this->image
         ];
     }
 }

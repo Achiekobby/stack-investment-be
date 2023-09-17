@@ -56,7 +56,7 @@ class AdminSettingsController extends Controller
             $filename = $timestamp . '_' . mt_rand(1000, 9999) . '.' . $extension;
 
             // Specify the full file path, including the filename
-            $full_path = public_path().'/uploads/' . $filename;
+            $full_path = public_path().'/uploads' . $filename;
 
             // Save the uploaded file to the specified path
             request()->file('image')->move(public_path('uploads'), $filename);
@@ -68,7 +68,7 @@ class AdminSettingsController extends Controller
             $category = Category::query()->create([
                 'category'=>request()->category,
                 'description'=>request()->description ?? null,
-                'image'=>url('uploads/',$filename)
+                'image'=>$filename
             ]);
             if(!$category){
                 return response()->json(['status'=>'failed','message'=>'Sorry, a problem occurred during the creation of the category. Please try again later'],400);
