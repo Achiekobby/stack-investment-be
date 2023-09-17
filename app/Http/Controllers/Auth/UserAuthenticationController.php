@@ -37,7 +37,7 @@ class UserAuthenticationController extends Controller
         $email      = Str::lower($request->validated()['email']);
         $password   = Hash::make($request->validated()['password']);
         $uuid       = Uuid::uuid4()->toString();
-        $email_verification_code =  Keygen::numeric(4)->generate();
+        $email_verification_code =  Keygen::numeric(6)->generate();
 
         return [
             'first_name'                =>$first_name,
