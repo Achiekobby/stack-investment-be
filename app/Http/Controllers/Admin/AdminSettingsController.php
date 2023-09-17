@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 //* Models
 use App\Models\Category;
 
+//* Resources
+use App\Http\Resources\General\CategoryResource;
+
 //* Utilities
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +24,7 @@ class AdminSettingsController extends Controller
         $this->admin =  $admin;
         $is_admin = ($admin->role === "super_admin" || $admin->role === "admin") ? true :false;
         if(!$is_admin){
-            abort(403, 'You must be an to access this page');
+            abort(403, 'You must be an admin to access this page');
         }
     }
 
@@ -29,15 +32,26 @@ class AdminSettingsController extends Controller
     //TODO:: Admin created category for users
     public function add_category(){
         try{
-            $rules = ['category'=>'string|required', 'description'=>'nullable|string'];
+            $rules = [
+                'category'      =>'string|required',
+                'description'   =>'nullable|string',
+                'image'         =>'required|image|mimes:jpeg,png,jpg|max:2048',
+            ];
             $validation=  Validator::make(request()->all(),$rules);
 
             if($validation->fails()){
                 return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],422);
             }
 
+            //* Handling the image
+            $imagePath = request()->file('image')->store('uploads', 'public');
+
             //* creating the category database entry
-            $category = Category::query()->create(['category'=>request()->category, 'description'=>request()->description ?? null]);
+            $category = Category::query()->create([
+                'category'=>request()->category,
+                'description'=>request()->description ?? null,
+                'image'=>$imagePath
+            ]);
             if(!$category){
                 return response()->json(['status'=>'failed','message'=>'Sorry, a problem occurred during the creation of the category. Please try again later'],400);
             }
@@ -100,7 +114,7 @@ class AdminSettingsController extends Controller
                 if(!$category){
                     return response()->json(['status'=>'failed','message'=>'Category not found'],404);
                 }
-                return response()->json(['status'=>'success','category'=>$category],200);
+                return response()->json(['status'=>'success','category'=> new CategoryResource($category)],200);
 
             }catch(\Exception $e){
                 return response()->json(['status'=>'success','message'=>$e->getMessage()],500);
@@ -116,7 +130,7 @@ class AdminSettingsController extends Controller
                 if(!$categories){
                     return response()->json(['status'=>'failed','message'=>'Category not found'],404);
                 }
-                return response()->json(['status'=>'success','categories'=>$categories],200);
+                return response()->json(['status'=>'success','categories'=>CategoryResource::collection($categories)],200);
 
             }catch(\Exception $e){
                 return response()->json(['status'=>'success','message'=>$e->getMessage()],500);

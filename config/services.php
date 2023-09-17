@@ -34,6 +34,10 @@ return [
     'paystack'=>[
         "secret_key"=>env("PAYSTACK_SECRET_KEY"),
         "public_key"=>env("PAYSTACK_PUBLIC_KEY"),
-    ]
+    ],
+
+    'url'=>[
+        'image_path'=>env('APP_URL')."/storage"
+    ],
 
 ];
