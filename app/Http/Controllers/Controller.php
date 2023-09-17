@@ -1353,6 +1353,194 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
 
+    * @OA\Post(
+        * path="/api/v1/admin/category/add",
+        * operationId="AdminAddNewCategory",
+        * tags={"Admin Settings Operations"},
+        * summary="Admin is able to a new category to the project",
+        * description="This API allows the admin to add a new category to the project",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"category", "description"},
+        *               @OA\Property(property="category", type="string", example="agriculture"),
+        *               @OA\Property(property="description", type="text",example="Sample Description"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Added new Category to the Successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Your new category has been added"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+        * @OA\Patch(
+        * path="/api/v1/admin/category/update/{id of the category to be updated}",
+        * operationId="AdminUpdateProjectCategory",
+        * tags={"Admin Settings Operations"},
+        * summary="Admin updating an existent category in the  project",
+        * description="This API allows the admin to update a category",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"category", "description","description"},
+        *               @OA\Property(property="category", type="string",example="Environment"),
+        *               @OA\Property(property="description", type="text",example="Sample Description"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Added new Crowdfunding project Successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="This category has been updated successfully"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+                                *),
+        * @OA\Get(
+        * path="/api/v1/admin/category/show/{id}",
+        * operationId="ExtractCategory",
+        * tags={"Admin Settings Operations"},
+        * summary="Admin extract category",
+        * description="This API allows the admin to extract the details of a category project",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved data from the backend about that particular category",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="category:{id:1..., category:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Sorry, Data could not be retrieved"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/admin/category/all",
+        * operationId="Extract all the categories by an admin",
+        * tags={"Admin Settings Operations"},
+        * summary="All Categories in the system",
+        * description="This API allows the admin to extract all the categories in the system",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved all the categories stored in the sytem",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="projects",type="string", example="categories:{id:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Delete(
+        * path="/api/v1/admin/category/remove/{id}",
+        * operationId="RemoveProjectCategory",
+        * tags={"Admin Settings Operations"},
+        * summary="Remove category permanently from the system",
+        * description="This API allows the logged user to remove categories from the system",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully removed crowdfunding project initiated by the logged in user",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Great, you have successfully removed this category"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="The project you are trying to remove does not belong to you"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
         */
 
 class Controller extends BaseController

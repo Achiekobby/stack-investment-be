@@ -3026,6 +3026,414 @@
                     }
                 }
             }
+        },
+        "/api/v1/admin/category/add": {
+            "post": {
+                "tags": [
+                    "Admin Settings Operations"
+                ],
+                "summary": "Admin is able to a new category to the project",
+                "description": "This API allows the admin to add a new category to the project",
+                "operationId": "AdminAddNewCategory",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "category",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "example": "agriculture"
+                                    },
+                                    "description": {
+                                        "type": "text",
+                                        "example": "Sample Description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Added new Category to the Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your new category has been added"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/category/update/{id of the category to be updated}": {
+            "patch": {
+                "tags": [
+                    "Admin Settings Operations"
+                ],
+                "summary": "Admin updating an existent category in the  project",
+                "description": "This API allows the admin to update a category",
+                "operationId": "AdminUpdateProjectCategory",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "category",
+                                    "description",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "example": "Environment"
+                                    },
+                                    "description": {
+                                        "type": "text",
+                                        "example": "Sample Description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Added new Crowdfunding project Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "This category has been updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/category/show/{id}": {
+            "get": {
+                "tags": [
+                    "Admin Settings Operations"
+                ],
+                "summary": "Admin extract category",
+                "description": "This API allows the admin to extract the details of a category project",
+                "operationId": "ExtractCategory",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved data from the backend about that particular category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "category:{id:1..., category:...}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Sorry, Data could not be retrieved"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/category/all": {
+            "get": {
+                "tags": [
+                    "Admin Settings Operations"
+                ],
+                "summary": "All Categories in the system",
+                "description": "This API allows the admin to extract all the categories in the system",
+                "operationId": "Extract all the categories by an admin",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved all the categories stored in the sytem",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "projects": {
+                                            "type": "string",
+                                            "example": "categories:{id:...}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/category/remove/{id}": {
+            "delete": {
+                "tags": [
+                    "Admin Settings Operations"
+                ],
+                "summary": "Remove category permanently from the system",
+                "description": "This API allows the logged user to remove categories from the system",
+                "operationId": "RemoveProjectCategory",
+                "responses": {
+                    "200": {
+                        "description": "Successfully removed crowdfunding project initiated by the logged in user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Great, you have successfully removed this category"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "The project you are trying to remove does not belong to you"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     }
 }

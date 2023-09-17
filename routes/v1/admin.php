@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\AdminAuthenticationController;
 //* AdminControllers
 use App\Http\Controllers\Admin\AdminCrowdfundingOperationsController;
 use App\Http\Controllers\Admin\AdminOrganizationController;
+use App\Http\Controllers\Admin\AdminSettingsController;
 
 
 
@@ -44,5 +45,21 @@ Route::group(['prefix'=>'admin'],function(){
     //Tip:: Rejecting organization project
     Route::post("reject/organization",[AdminOrganizationController::class, 'reject_organization']);
 
+
+    //?INFORMATION => THE FOLLOWING API HAS TO WITH THE ADMIN SETTINGS
+    //Tip:: Add new category for crowdfunding projects
+    Route::post('category/add',[AdminSettingsController::class,'add_category']);
+
+    //Tip:: Update category for crowdfunding projects
+    Route::patch('category/update/{id}',[AdminSettingsController::class,'update_category']);
+
+    //Tip:: Remove category for crowdfunding projects
+    Route::delete('category/remove/{id}',[AdminSettingsController::class,'delete_category']);
+
+    //Tip:: Show All category for crowdfunding projects
+    Route::get('category/all',[AdminSettingsController::class,'show_all_category']);
+
+    //Tip:: Show category for crowdfunding projects
+    Route::get('category/{id}',[AdminSettingsController::class,'show_category']);
 });
 ?>
