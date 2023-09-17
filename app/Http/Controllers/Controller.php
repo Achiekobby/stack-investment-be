@@ -513,8 +513,8 @@ use Illuminate\Routing\Controller as BaseController;
         *            mediaType="multipart/form-data",
         *            @OA\Schema(
         *               type="object",
-        *               required={"uuid", "title","description","amount"},
-        *               @OA\Property(property="uuid", type="string", example="81a12b6e-1be0..."),
+        *               required={"category", "title","description","amount"},
+        *               @OA\Property(property="category", type="string", example="agriculture"),
         *               @OA\Property(property="title", type="string",example="Sample Project"),
         *               @OA\Property(property="description", type="text",example="Sample Description"),
         *               @OA\Property(property="amount", type="string",example="100.00"),

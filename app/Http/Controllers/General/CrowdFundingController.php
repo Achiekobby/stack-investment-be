@@ -26,8 +26,8 @@ class CrowdFundingController extends Controller
     //TODO => Create a new project to be contributed for
     public function create_project(NewProjectRequest $request){
         try{
-            $uuid           = $request->validated()['uuid'];
             $title          = $request->validated()['title'];
+            $category       = $request->validated()['category'];
             $description    = $request->validated()['description'];
             $amount         = $request->validated()['amount'];
 
@@ -38,7 +38,8 @@ class CrowdFundingController extends Controller
             $new_project = Project::query()->create([
                 "unique_id" => Str::uuid(),
                 "user_id"   => $logged_in_user->id,
-                "title"=>$title,
+                "title"     =>$title,
+                "category"  =>$category,
                 "description"=>$description,
                 "amount_requested"=>number_format((float)$amount,2,'.',''),
                 "amount_received"=>"0.00",

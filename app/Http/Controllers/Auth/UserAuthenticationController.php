@@ -57,6 +57,11 @@ class UserAuthenticationController extends Controller
             if(User::where('email',$request->email)->first()){
                 return response()->json(['status'=>'failed','message'=>'Email is already Taken'],403);
             }
+
+            if(User::where('phone_number',$request->email)->first()){
+                return response()->json(['status'=>'failed','message'=>'Phone Number is already Taken'],403);
+            }
+
             $user = User::query()->create($this->format_registration_data($request));
             if($user){
                  //* Generating the access token

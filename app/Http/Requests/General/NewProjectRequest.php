@@ -22,7 +22,7 @@ class NewProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "uuid"          =>"string|required",
+            'category'      =>'required|string',
             "title"         =>"required|string",
             "description"   =>"required|string",
             "amount"        =>"required|string",

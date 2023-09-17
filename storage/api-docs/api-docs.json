@@ -1156,15 +1156,15 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "uuid",
+                                    "category",
                                     "title",
                                     "description",
                                     "amount"
                                 ],
                                 "properties": {
-                                    "uuid": {
+                                    "category": {
                                         "type": "string",
-                                        "example": "81a12b6e-1be0..."
+                                        "example": "agriculture"
                                     },
                                     "title": {
                                         "type": "string",
