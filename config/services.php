@@ -37,7 +37,7 @@ return [
     ],
 
     'url'=>[
-        'image_path'=>env('APP_URL')."/storage"
+        'image_path'=>env('APP_URL')."/uploads"."/"
     ],
 
 ];

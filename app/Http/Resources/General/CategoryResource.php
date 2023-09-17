@@ -18,7 +18,7 @@ class CategoryResource extends JsonResource
             'id'=>$this->id,
             'category'=>$this->category,
             'description'=>$this->description,
-            'image'=>config('services.url.image_path')."/".$this->image
+            'image'=>$this->image
         ];
     }
 }

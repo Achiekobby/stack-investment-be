@@ -13,6 +13,7 @@ use App\Http\Resources\General\CategoryResource;
 
 //* Utilities
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class AdminSettingsController extends Controller
 {
@@ -43,14 +44,31 @@ class AdminSettingsController extends Controller
                 return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],422);
             }
 
-            //* Handling the image
-            $imagePath = request()->file('image')->store('uploads', 'public');
+            // //* Handling the image
+            // $timestamp = time();
+            // $extension = request()->file('image')->getClientOriginalExtension(); // Get the original file extension
+            // $filename = $timestamp . '_' . mt_rand(1000, 9999) . '.' . $extension;
+            // $full_path = public_path().'/uploads';
+            // File::put($full_path, $filename);
+            // Handling the image
+            $timestamp = time();
+            $extension = request()->file('image')->getClientOriginalExtension(); // Get the original file extension
+            $filename = $timestamp . '_' . mt_rand(1000, 9999) . '.' . $extension;
+
+            // Specify the full file path, including the filename
+            $full_path = public_path().'/uploads/' . $filename;
+
+            // Save the uploaded file to the specified path
+            request()->file('image')->move(public_path('uploads'), $filename);
+
+// You can also store the $full_path in your database if needed
+
 
             //* creating the category database entry
             $category = Category::query()->create([
                 'category'=>request()->category,
                 'description'=>request()->description ?? null,
-                'image'=>$imagePath
+                'image'=>url('uploads/',$filename)
             ]);
             if(!$category){
                 return response()->json(['status'=>'failed','message'=>'Sorry, a problem occurred during the creation of the category. Please try again later'],400);
