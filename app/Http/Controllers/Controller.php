@@ -682,6 +682,41 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
 
+        * @OA\Get(
+        * path="/api/v1/user/project/pending",
+        * operationId="ExtractAllPendingProjectForDonation",
+        * tags={"Crowdfunding Operations"},
+        * summary="All User crowdfunding pending projects",
+        * description="This API allows the user to extract all the details of every pending approval crowdfunding project which has been approved",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved all the crowdfunding pending projects initiated by the logged in user",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="pending projects",type="string", example="projects:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
         * @OA\Delete(
         * path="/api/v1/user/project/{unique_id of crowdfunding project to be deleted}",
         * operationId="RemoveProjectForDonation",

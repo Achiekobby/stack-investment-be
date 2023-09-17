@@ -1555,6 +1555,81 @@
                 }
             }
         },
+        "/api/v1/user/project/pending": {
+            "get": {
+                "tags": [
+                    "Crowdfunding Operations"
+                ],
+                "summary": "All User crowdfunding pending projects",
+                "description": "This API allows the user to extract all the details of every pending approval crowdfunding project which has been approved",
+                "operationId": "ExtractAllPendingProjectForDonation",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved all the crowdfunding pending projects initiated by the logged in user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "pending projects": {
+                                            "type": "string",
+                                            "example": "projects:{uuid:...}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/v1/user/project/{unique_id of crowdfunding project to be deleted}": {
             "delete": {
                 "tags": [
