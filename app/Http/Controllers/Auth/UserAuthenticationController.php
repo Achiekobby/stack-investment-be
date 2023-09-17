@@ -58,7 +58,7 @@ class UserAuthenticationController extends Controller
                 return response()->json(['status'=>'failed','message'=>'Email is already Taken'],403);
             }
 
-            if(User::where('phone_number',$request->email)->first()){
+            if(User::where('phone_number',$request->phone_number)->first()){
                 return response()->json(['status'=>'failed','message'=>'Phone Number is already Taken'],403);
             }
 
