@@ -20,6 +20,7 @@ class UserDetailsResource extends JsonResource
             'uuid'          =>$this->uuid,
             // "is_admin"      =>$this->is_admin === true ? true : false,
             "role"          =>$this->role,
+            "status"        =>$this->status,
             'first_name'    =>Str::title($this->first_name),
             'last_name'     =>Str::title($this->last_name),
             'email'         =>$this->email,
