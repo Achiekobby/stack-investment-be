@@ -45,6 +45,7 @@ class UserAuthenticationController extends Controller
             'phone_number'              =>$phone_number,
             'uuid'                      =>Uuid::uuid4()->toString(),
             'email'                     =>$email,
+            'status'                    =>'active',
             'password'                  =>$password,
             'email_verification_code'   =>$email_verification_code,
             'remember_token'            =>Str::random(10),

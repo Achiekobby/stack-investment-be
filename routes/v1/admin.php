@@ -61,5 +61,10 @@ Route::group(['prefix'=>'admin'],function(){
 
     //Tip:: Show category for crowdfunding projects
     Route::get('category/{id}',[AdminSettingsController::class,'show_category']);
+
+
+    //? INFORMATION => EXTRACTING ALL THE USERS IN THE SYSTEM
+    Route::get('users',[AdminAuthenticationController::class,'get_all_users']);
+    Route::post('user/status_change',[AdminAuthenticationController::class,'change_user_status']);
 });
 ?>

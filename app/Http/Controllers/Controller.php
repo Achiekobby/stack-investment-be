@@ -1480,7 +1480,7 @@ use Illuminate\Routing\Controller as BaseController;
 
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully retrieved all the categories stored in the sytem",
+        *          description="Successfully retrieved all the categories stored in the system",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
         *              @OA\Property(property="projects",type="string", example="categories:{id:...}"),
@@ -1535,6 +1535,86 @@ use Illuminate\Routing\Controller as BaseController;
                     @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="failed"),
         *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/admin/users",
+        * operationId="AdminExtractAllDetailsOfAccounts",
+        * tags={"Admin Settings Operations"},
+        * summary="Admin is able to a extract all the details of user accounts",
+        * description="This API allows the admin to extract details of the user accounts in the system",
+        *      @OA\Response(
+        *          response=201,
+        *          description="Extracting details of user accounts Successfully done",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="user_accounts:{}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Post(
+        * path="/api/v1/admin/user/status_change",
+        * operationId="AdminChangeStatusOfUserAccount",
+        * tags={"Admin Settings Operations"},
+        * summary="Admin is able to a change the status of a user account in the system",
+        * description="This API allows the admin to change the status of a user account whether to active or inactive",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"user_uuid", "status"},
+        *               @OA\Property(property="user_uuid", type="string", example="81a12b6e..."),
+        *               @OA\Property(property="status", type="text",example="active/inactive"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="User Account status change successful",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Great, You have successfully changed the status of this user account"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
         *           ),
         *       ),
         *      @OA\Response(response=500, description="Internal server error"),

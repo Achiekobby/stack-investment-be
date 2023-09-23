@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->enum("role",["regular","admin","super_admin"])->default("regular");
+            $table->enum('status',['active', 'inactive'])->default('active');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();

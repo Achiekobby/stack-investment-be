@@ -31,7 +31,8 @@ class User extends Authenticatable
         'email_verification_code',
         'password_reset_code',
         'profile_picture',
-        "role"
+        "role",
+        "status"
     ];
 
     /**

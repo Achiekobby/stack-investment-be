@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\AdminRequest;
 
 //* Resources
 use App\Http\Resources\Admin\AdminDetailsResource;
+use App\Http\Resources\User\UserDetailsResource;
 
 //* Models
 use App\Models\Admin;
@@ -51,6 +52,7 @@ class AdminAuthenticationController extends Controller
                 'last_name'     =>$last_name,
                 'email'         =>$email,
                 'role'          =>$role,
+                'status'        =>'active',
                 'phone_number'  =>$phone_number,
                 'email_verified_at'=>Carbon::now()->format('Y-m-d H:i:s'),
                 'uuid'          =>Uuid::uuid4()->toString(),
@@ -188,6 +190,63 @@ class AdminAuthenticationController extends Controller
                     }
                 }
             }
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
+    public function get_all_users(){
+        try{
+            $admin = auth()->guard('api')->user();
+            if($admin->role === "admin" || $admin->role ==="super_admin"){
+                $system_user_accounts = User::query()->orderBy('created_at','DESC')->get();
+                if(!$system_user_accounts){
+                    return response()->json(['status'=>'failed','message'=>'No User in the system yet'],404);
+                }
+                return response()->json(['status'=>'success','user_accounts'=>UserDetailsResource::collection($system_user_accounts)],200);
+            }
+
+            return response()->json(['status'=>'failed','message'=>'Sorry, only Admins or Super Admins can access Accounts Details'],401);
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
+    public function change_user_status(){
+        try{
+            $rules = [
+                "user_uuid" =>"required|string",
+                "status"    =>"required|string"
+            ];
+
+            $validation = Validator::make(request()->all(),$rules);
+            if($validation->fails()){
+                return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],422);
+            }
+
+            $admin = auth()->guard('api')->user();
+            if($admin->role==="admin" || $admin->role==="super_admin"){
+                $user = User::query()->where('uuid',request()->user_uuid)->first();
+                if(!$user){
+                    return response()->json(['status'=>'failed','message'=>'Sorry, User not found'],404);
+                }
+                if(request()->status === "active"){
+                    if($user->status === "active"){
+                        return response()->json(['status'=>'failed','message'=>'Sorry, user is already active'],400);
+                    }
+                    $user->update(['status'=>'active']);
+                    return response()->json(['status'=>'success','message'=>'Great, you have successfully updated the status of this user'],200);
+                }
+                elseif(request()->status === "inactive"){
+                    if($user->status==="inactive"){
+                        return response()->json(['status'=>'failed','message'=>'Sorry, user is already inactive'],400);
+                    }
+                    $user->update(['status'=>'inactive']);
+                    return response()->json(['status'=>'success','message'=>'Great, you have successfully updated the status of this user'],200);
+                }
+            }
+            return response()->json(['status'=>'success','message'=>'Sorry, you are not allowed to perform action. Contact your administrator administrator'],401);
+
         }catch(\Exception $e){
             return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
         }
