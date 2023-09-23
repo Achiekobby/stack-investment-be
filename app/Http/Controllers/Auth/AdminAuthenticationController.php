@@ -37,7 +37,7 @@ class AdminAuthenticationController extends Controller
             $phone_number   = $request->validated()['phone_number'];
             $role           = $request->validated()['role'];
 
-            $super_admin = auth()->guard('admin')->user();
+            $super_admin = auth()->guard('api')->user();
             if($super_admin->role !=="super_admin"){
                 return response()->json(['status'=>'failed','message'=>'Sorry, only a super admin can add new admins/super-admins'],400);
             }
@@ -46,13 +46,13 @@ class AdminAuthenticationController extends Controller
             $generic_password = Keygen::numeric(6)->prefix('ADM-'.time())->generate();
 
             //* creating the admin
-            $new_admin = Admin::query()->create([
+            $new_admin = User::query()->create([
                 'first_name'    =>$first_name,
                 'last_name'     =>$last_name,
-                'full_name'     =>$first_name." ".$last_name,
                 'email'         =>$email,
                 'role'          =>$role,
                 'phone_number'  =>$phone_number,
+                'email_verified_at'=>Carbon::now()->format('Y-m-d H:i:s'),
                 'uuid'          =>Uuid::uuid4()->toString(),
                 'password'      =>Hash::make($generic_password)
             ]);
