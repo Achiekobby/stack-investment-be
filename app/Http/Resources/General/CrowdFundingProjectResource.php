@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\User;
+use  App\Http\Resources\General\ProjectPaymentResource;
 
 class CrowdFundingProjectResource extends JsonResource
 {
@@ -30,7 +31,8 @@ class CrowdFundingProjectResource extends JsonResource
             "project_status"    =>$this->project_status,
             "approval"          =>$this->approval,
             "approved_on"       =>is_null($this->approved_on) ? null : Carbon::createFromFormat('Y-m-d H:i:s',$this->approved_on)->format('Y-m-d'),
-            "project_created_at"=>Carbon::createFromFormat('Y-m-d H:i:s',$this->created_at)->format('Y-m-d')
+            "project_created_at"=>Carbon::createFromFormat('Y-m-d H:i:s',$this->created_at)->format('Y-m-d'),
+            "donations"=>ProjectPaymentResource::collection($this->project_payments->where("payment_status","paid"))
         ];
     }
 }
