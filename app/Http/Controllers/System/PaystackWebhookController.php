@@ -12,8 +12,8 @@ use App\Models\User;
 use Carbon\Carbon;
 
 //* Notifications
-use App\Notifications\Crowdfunding\DonationReceiptNotification;
-use App\Notifications\Crowdfunding\DonorRecipientNotification;
+use App\Notifications\CrowdFunding\DonationReceiptNotification;
+use App\Notifications\CrowdFunding\DonorRecipientNotification;
 
 //* Utilities
 use Illuminate\Support\Str;

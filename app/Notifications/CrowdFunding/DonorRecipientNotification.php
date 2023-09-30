@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications\Crowdfunding;
+namespace App\Notifications\CrowdFunding;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
