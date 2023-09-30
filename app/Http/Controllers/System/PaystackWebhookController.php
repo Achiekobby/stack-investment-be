@@ -35,7 +35,7 @@ class PaystackWebhookController extends Controller
                 $crowdfunding_project = Project::query()->where("unique_id",$payment_extra_data->project_uuid)->first();
                 $crowdfunding_project->update([
                     "amount_received"   =>number_format((float)($crowdfunding_project->amount_received + ($event->data->amount/100)),2,'.',''),
-                    "number_of_donors"  => (int)$crowdfunding_project->number_of_donors +1
+                    "number_of_donors"  =>((int)$crowdfunding_project->number_of_donors) + 1
                 ]);
 
                 //* check to see if the target has been reached

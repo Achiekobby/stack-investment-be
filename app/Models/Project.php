@@ -20,7 +20,7 @@ class Project extends Model
         "description",
         "amount_requested",
         "amount_received",
-        "number_od_donors",
+        "number_of_donors",
         "project_status",
         "approval",
         "approved_on",
