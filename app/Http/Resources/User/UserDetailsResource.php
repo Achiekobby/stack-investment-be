@@ -5,6 +5,7 @@ namespace App\Http\Resources\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
+use App\Http\Resources\User\PaymentMethodsResource;
 
 class UserDetailsResource extends JsonResource
 {
@@ -25,7 +26,8 @@ class UserDetailsResource extends JsonResource
             'last_name'     =>Str::title($this->last_name),
             'email'         =>$this->email,
             'phone_number'  =>$this->phone_number,
-            'email_verified_at'=>$this->email_verified_at
+            'email_verified_at'=>$this->email_verified_at,
+            'payout_methods'=>PaymentMethodResource::collection($this->payment_methods->where('status','active'))
         ];
     }
 }

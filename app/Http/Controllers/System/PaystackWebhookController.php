@@ -84,6 +84,6 @@ class PaystackWebhookController extends Controller
     }
 
     public function callback(){
-        return redirect("https://stacksinvestment.com/");
+        return redirect("https://stacksinvestment.com/campaigns/open-campaigns");
     }
 }

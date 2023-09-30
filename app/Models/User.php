@@ -10,6 +10,7 @@ use Laravel\Passport\HasApiTokens;
 
 use App\Models\Project;
 use App\Models\OrganizationMember;
+use App\Models\PaymentMethod;
 
 class User extends Authenticatable
 {
@@ -66,5 +67,9 @@ class User extends Authenticatable
 
     public function organizations(){
         return $this->hasManyThrough(Organization::class,OrganizationMember::class,"user_id","id","id","organization_id");
+    }
+
+    public function payment_methods(){
+        return $this->hasMany(PaymentMethod::class);
     }
 }

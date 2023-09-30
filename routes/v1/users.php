@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 //* AuthControllers
 use  App\Http\Controllers\Auth\UserAuthenticationController;
 
+//* User Operations Controller
+use App\Http\Controllers\User\UserProfileController;
+
 Route::group(['prefix'=>'user'],function(){
 
     // Tip:: Register a user
@@ -27,6 +30,9 @@ Route::group(['prefix'=>'user'],function(){
 
     //Tip:: Email verification code resend
     Route::get('resend_email_code',[UserAuthenticationController::class,'resendCode']);
+
+    //Tip:: Add a payment method
+    Route::post("payment_method/create",[UserProfileController::class,"create_payment_method"]);
 
 });
 ?>
