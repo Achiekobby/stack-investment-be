@@ -22,6 +22,7 @@ class CrowdFundingProjectResource extends JsonResource
             "unique_id"         =>$this->unique_id,
             "created_by"        =>Str::title($created_by->first_name)." ".Str::title($created_by->last_name),
             'title'             =>$this->title,
+            "category"          =>$this->category,
             "description"       =>$this->description ?? null,
             "amount_requested"  =>$this->amount_requested,
             "amount_donated"    =>$this->amount_received,
