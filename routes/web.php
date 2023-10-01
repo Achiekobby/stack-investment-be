@@ -18,4 +18,4 @@ Route::get('/', function () {
 });
 
 Route::post('paystack/web_hook',[PaystackWebhookController::class,"handle"]);
-Route::post('paystack/callback',[PaystackWebhookController::class,"callback"]);
+Route::get('paystack/callback',[PaystackWebhookController::class,"callback"]);
