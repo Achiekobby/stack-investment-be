@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->string('category')->after('user_id');
+            $table->string("mode_of_completion")->default("target_achieved");
+            $table->string("end_date")->nullable();
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('category');
+            $table->dropColumn(['target_achieved']);
+            $table->dropColumn("end_date");
         });
     }
 };

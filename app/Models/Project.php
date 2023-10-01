@@ -24,6 +24,8 @@ class Project extends Model
         "project_status",
         "approval",
         "approved_on",
+        "mode_of_completion",
+        "end_date"
     ];
 
     protected $guarded = ["created_at","updated_at"];

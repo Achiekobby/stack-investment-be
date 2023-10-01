@@ -40,4 +40,8 @@ return [
         'image_path'=>env('APP_URL')."/uploads"."/"
     ],
 
+    'payment_url'=>[
+        'paystack'=>env("PAYSTACK_PAYMENT_URL")
+    ]
+
 ];

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\System\PaystackWebhookController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('paystack/web_hook',[PaystackWebhookController::class,"handle"]);
+Route::post('paystack/callback',[PaystackWebhookController::class,"callback"]);

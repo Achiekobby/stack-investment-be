@@ -1621,6 +1621,55 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
 
+        * @OA\Post(
+        * path="/api/v1/user/payment/project/donate",
+        * operationId="CrowdfundingDonationPayments",
+        * tags={"Crowdfunding Campaign Donation Operations"},
+        * summary="A donor can contribute to a crowdfunding project in the system",
+        * description="This API allows the a donor to make a contribution to the specified crowdfunding project",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"amount", "project_uuid","email","first_name","last_name"},
+        *               @OA\Property(property="amount", type="string", example="100"),
+        *               @OA\Property(property="project_uuid", type="string", example="adsfadfasdf..."),
+        *               @OA\Property(property="email", type="string", example="example@gmail.com"),
+        *               @OA\Property(property="first_name", type="string",example="jane"),
+        *               @OA\Property(property="last_name", type="string",example="Doe"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="User payment url generated successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="paystack response",type="string", example="paystack payment details"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
         */
 
 class Controller extends BaseController

@@ -34,6 +34,15 @@ class CrowdFundingController extends Controller
             //* extract logged in user using the auth token
             $logged_in_user = auth()->guard('api')->user();
 
+            $mode_of_completion = "";
+            if(is_null(request()->end_date)|| request()->end_date===""||request()->end_mode==="target"){
+                $mode_of_completion = "target_achieved";
+            }
+            else{
+                $mode_of_completion = "date";
+            }
+
+
             //* insert the project in the db table
             $new_project = Project::query()->create([
                 "unique_id" => Str::uuid(),
@@ -43,6 +52,9 @@ class CrowdFundingController extends Controller
                 "description"=>$description,
                 "amount_requested"=>number_format((float)$amount,2,'.',''),
                 "amount_received"=>"0.00",
+                "mode_of_completion"=>$mode_of_completion,
+                "end_date"=>$mode_of_completion === "date" ? request()->end_date : null
+
             ]);
             if($new_project){
                 return response()->json(['status'=>"success","message"=>"Your new project is under review. Please check back within 24 hours for approval status"],201);

@@ -3610,6 +3610,122 @@
                     }
                 }
             }
+        },
+        "/api/v1/user/payment/project/donate": {
+            "post": {
+                "tags": [
+                    "Crowdfunding Campaign Donation Operations"
+                ],
+                "summary": "A donor can contribute to a crowdfunding project in the system",
+                "description": "This API allows the a donor to make a contribution to the specified crowdfunding project",
+                "operationId": "CrowdfundingDonationPayments",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "project_uuid",
+                                    "email",
+                                    "first_name",
+                                    "last_name"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "string",
+                                        "example": "100"
+                                    },
+                                    "project_uuid": {
+                                        "type": "string",
+                                        "example": "adsfadfasdf..."
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@gmail.com"
+                                    },
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "jane"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User payment url generated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "paystack response": {
+                                            "type": "string",
+                                            "example": "paystack payment details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     }
 }

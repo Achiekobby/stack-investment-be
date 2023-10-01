@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid("unique_id");
             $table->foreignId("user_id");
+            $table->string('category');
             $table->foreign("user_id")->references("id")->on("users")->cascadeOnDelete();
             $table->string("title");
             $table->longText("description")->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string("project_status")->default("inactive");
             $table->string("approval")->default("pending");
             $table->datetime("approved_on")->nullable();
+            $table->string("mode_of_completion")->default("target_achieved");
             $table->timestamps();
         });
     }

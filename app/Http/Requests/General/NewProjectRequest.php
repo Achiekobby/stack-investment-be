@@ -26,6 +26,8 @@ class NewProjectRequest extends FormRequest
             "title"         =>"required|string",
             "description"   =>"required|string",
             "amount"        =>"required|string",
+            "end_date"      =>"nullable|string",
+            "end_mode"      =>"required|string"
         ];
     }
 }
