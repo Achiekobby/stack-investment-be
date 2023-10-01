@@ -38,12 +38,6 @@ class CrowdfundingTransactionController extends Controller
                 return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],422);
             }
 
-            //* logged in user data
-            $user = auth()->guard('api')->user();
-            if(!$user){
-                return response()->json(['status'=>'failed','message'=>'User not found'],404);
-            }
-
             //* Finding the project the user is trying to donate for.
             $project = Project::query()->where([
                 ['unique_id',request()->project_uuid],
