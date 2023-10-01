@@ -103,7 +103,7 @@ class CrowdFundingController extends Controller
                 return response()->json(['status'=>'failed','message'=>"User not found"],404);
             }
 
-            $project = $user->projects()->where([['unique_id',$unique_id],['user_id',$user->id]])->first();
+            $project = Project::query()->where('unique_id')->first();
             if(!$project){
                 return response()->json(['status'=>'failed','message'=>'Sorry, Project was not found'],404);
             }
