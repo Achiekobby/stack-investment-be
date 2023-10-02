@@ -1670,6 +1670,217 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
 
+    * @OA\Post(
+        * path="/api/v1/user/payment_method/create",
+        * operationId="UserCreatePayoutMethod",
+        * tags={"Crowdfunding Campaign Donation Operations"},
+        * summary="A user or campaign owner can create a payment method",
+        * description="A user or campaign owner can create a payment method which will aid the admin to transfer funds earned by the user to them",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"account_number", "account_name","bank_name","momo_number","momo_network","account_type"},
+        *               @OA\Property(property="account_type", type="string", example="momo/bank => This will define the payload structure. if the user chooses momo, the account_number and bank name is expected to be an empty string and vice versa if the account type is bank"),
+        *               @OA\Property(property="account_name", type="string", example="John Doe => required for both bank and momo account_type"),
+        *               @OA\Property(property="bank name", type="string",example="Ecobank required only when the account type is bank"),
+        *               @OA\Property(property="account_number", type="string", example="424242424242424242 => account number is required when the account type is bank"),
+        *               @OA\Property(property="momo_network", type="string",example="MTN/Vodafone/AirtelTigo"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="User Payment method created successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="payment_method",type="string", example="{id:1...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Post(
+        * path="/api/v1/user/withdrawal/request/create",
+        * operationId="WithdrawalRequestCreation",
+        * tags={"Crowdfunding Campaign Donation Operations"},
+        * summary="Enabling a user create a request for funds withdrawal",
+        * description="This API enables a user to create a request for funds withdrawal",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"project_uuid","user_uuid"},
+        *               @OA\Property(property="project_uuid", type="string", example="adsfadfasdf..."),
+        *               @OA\Property(property="user_uuid", type="string", example="adsfadfasdf..."),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="User withdrawal request created successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Withdrawal request created successfully"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/user/withdrawal/request/all",
+        * operationId="WithdrawalRequestExtractAll",
+        * tags={"Crowdfunding Campaign Donation Operations"},
+        * summary="Enabling a user extract all their withdrawal request for funds withdrawal",
+        * description="This API enables a user to extract all their  request for funds withdrawal",
+        *      @OA\Response(
+        *          response=200,
+        *          description="User withdrawal request extracted successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Withdrawal requests extracted successfully"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/admin/withdrawal_request/pending",
+        * operationId="AdminWithdrawalRequestExtractPending",
+        * tags={"Crowdfunding Campaign Donation Operations"},
+        * summary="Enabling an admin to extract all user pending withdrawal requests",
+        * description="This API enables an admin to extract all user pending request for funds withdrawal",
+        *      @OA\Response(
+        *          response=200,
+        *          description="User withdrawal request extracted successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Withdrawal requests extracted successfully"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+         * @OA\Post(
+        * path="/api/v1/user/withdrawal_request/change_status",
+        * operationId="AdminWithdrawalRequestUpdateStatus",
+        * tags={"Crowdfunding Campaign Donation Operations"},
+        * summary="Enabling an admin to change the status a request for funds withdrawal",
+        * description="This API enables an admin to change the status a request for funds withdrawal",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"withdrawal_id","approval_status","reason"},
+        *               @OA\Property(property="withdrawal_id", type="string", example="1"),
+        *               @OA\Property(property="approval_status", type="string", example="approved/denied"),
+        *               @OA\Property(property="reason", type="string", example="required when the approval status is denied"),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="User withdrawal request updated successfully",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Withdrawal request updated successfully"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
         */
 
 class Controller extends BaseController

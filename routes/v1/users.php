@@ -7,6 +7,7 @@ use  App\Http\Controllers\Auth\UserAuthenticationController;
 
 //* User Operations Controller
 use App\Http\Controllers\User\UserProfileController;
+use App\Http\Controllers\User\UserController;
 
 Route::group(['prefix'=>'user'],function(){
 
@@ -33,6 +34,15 @@ Route::group(['prefix'=>'user'],function(){
 
     //Tip:: Add a payment method
     Route::post("payment_method/create",[UserProfileController::class,"create_payment_method"]);
+
+    //Tip:: Making a withdrawal request
+    Route::post("withdrawal/request/create",[UserController::class,"make_withdrawal_request"]);
+
+    //Tip :: Extract all user withdrawal request
+    Route::get("withdrawal/request/all",[UserController::class,"all_withdrawal_request"]);
+
+    //Tip::Update a pending or denied withdrawal request
+    Route::patch("withdrawal/request/update/{id}",[UserController::class,"update_withdrawal_request"]);
 
 });
 ?>

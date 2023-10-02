@@ -11,6 +11,7 @@ use Laravel\Passport\HasApiTokens;
 use App\Models\Project;
 use App\Models\OrganizationMember;
 use App\Models\PaymentMethod;
+use App\Models\WithdrawalRequest;
 
 class User extends Authenticatable
 {
@@ -71,5 +72,9 @@ class User extends Authenticatable
 
     public function payment_methods(){
         return $this->hasMany(PaymentMethod::class);
+    }
+
+    public function withdrawal_requests(){
+        return $this->hasMany(WithdrawalRequest::class);
     }
 }

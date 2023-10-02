@@ -3726,6 +3726,480 @@
                     }
                 }
             }
+        },
+        "/api/v1/user/payment_method/create": {
+            "post": {
+                "tags": [
+                    "Crowdfunding Campaign Donation Operations"
+                ],
+                "summary": "A user or campaign owner can create a payment method",
+                "description": "A user or campaign owner can create a payment method which will aid the admin to transfer funds earned by the user to them",
+                "operationId": "UserCreatePayoutMethod",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "account_number",
+                                    "account_name",
+                                    "bank_name",
+                                    "momo_number",
+                                    "momo_network",
+                                    "account_type"
+                                ],
+                                "properties": {
+                                    "account_type": {
+                                        "type": "string",
+                                        "example": "momo/bank => This will define the payload structure. if the user chooses momo, the account_number and bank name is expected to be an empty string and vice versa if the account type is bank"
+                                    },
+                                    "account_name": {
+                                        "type": "string",
+                                        "example": "John Doe => required for both bank and momo account_type"
+                                    },
+                                    "bank name": {
+                                        "type": "string",
+                                        "example": "Ecobank required only when the account type is bank"
+                                    },
+                                    "account_number": {
+                                        "type": "string",
+                                        "example": "424242424242424242 => account number is required when the account type is bank"
+                                    },
+                                    "momo_network": {
+                                        "type": "string",
+                                        "example": "MTN/Vodafone/AirtelTigo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User Payment method created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "payment_method": {
+                                            "type": "string",
+                                            "example": "{id:1...}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/withdrawal/request/create": {
+            "post": {
+                "tags": [
+                    "Crowdfunding Campaign Donation Operations"
+                ],
+                "summary": "Enabling a user create a request for funds withdrawal",
+                "description": "This API enables a user to create a request for funds withdrawal",
+                "operationId": "WithdrawalRequestCreation",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "project_uuid",
+                                    "user_uuid"
+                                ],
+                                "properties": {
+                                    "project_uuid": {
+                                        "type": "string",
+                                        "example": "adsfadfasdf..."
+                                    },
+                                    "user_uuid": {
+                                        "type": "string",
+                                        "example": "adsfadfasdf..."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User withdrawal request created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Withdrawal request created successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/withdrawal/request/all": {
+            "get": {
+                "tags": [
+                    "Crowdfunding Campaign Donation Operations"
+                ],
+                "summary": "Enabling a user extract all their withdrawal request for funds withdrawal",
+                "description": "This API enables a user to extract all their  request for funds withdrawal",
+                "operationId": "WithdrawalRequestExtractAll",
+                "responses": {
+                    "200": {
+                        "description": "User withdrawal request extracted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Withdrawal requests extracted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/withdrawal_request/pending": {
+            "get": {
+                "tags": [
+                    "Crowdfunding Campaign Donation Operations"
+                ],
+                "summary": "Enabling an admin to extract all user pending withdrawal requests",
+                "description": "This API enables an admin to extract all user pending request for funds withdrawal",
+                "operationId": "AdminWithdrawalRequestExtractPending",
+                "responses": {
+                    "200": {
+                        "description": "User withdrawal request extracted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Withdrawal requests extracted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/withdrawal_request/change_status": {
+            "post": {
+                "tags": [
+                    "Crowdfunding Campaign Donation Operations"
+                ],
+                "summary": "Enabling an admin to change the status a request for funds withdrawal",
+                "description": "This API enables an admin to change the status a request for funds withdrawal",
+                "operationId": "AdminWithdrawalRequestUpdateStatus",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "withdrawal_id",
+                                    "approval_status",
+                                    "reason"
+                                ],
+                                "properties": {
+                                    "withdrawal_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "approval_status": {
+                                        "type": "string",
+                                        "example": "approved/denied"
+                                    },
+                                    "reason": {
+                                        "type": "string",
+                                        "example": "required when the approval status is denied"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User withdrawal request updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Withdrawal request updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     }
 }

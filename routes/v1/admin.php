@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\AdminAuthenticationController;
 use App\Http\Controllers\Admin\AdminCrowdfundingOperationsController;
 use App\Http\Controllers\Admin\AdminOrganizationController;
 use App\Http\Controllers\Admin\AdminSettingsController;
+use App\Http\Controllers\Admin\AdminWithdrawalRequestController;
 
 
 
@@ -66,5 +67,9 @@ Route::group(['prefix'=>'admin'],function(){
     //? INFORMATION => EXTRACTING ALL THE USERS IN THE SYSTEM
     Route::get('users',[AdminAuthenticationController::class,'get_all_users']);
     Route::post('user/status_change',[AdminAuthenticationController::class,'change_user_status']);
+
+    //? WITHDRAWAL REQUESTS
+    Route::get("withdrawal_request/pending",[AdminWithdrawalRequestController::class,'pending_withdrawal_requests']);
+    Route::post("withdrawal_request/change_status",[AdminWithdrawalRequestController::class,'change_withdrawal_request_status']);
 });
 ?>
