@@ -37,6 +37,22 @@ class OrganizationController extends Controller
         }
     }
 
+    public function extract_user_group(){
+        try{
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'Sorry, user not found'],404);
+            }
+
+            //* Extracting groups where the user is a group leader of
+            $groups = $user->organizations()->get();
+            return response()->json(['status'=>'success',''=>OrganizationResource::collection($groups)],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage],500);
+        }
+    }
+
     //TODO=> Extract all organizations a logged in user has been part of which is still active.
     public function active_organizations(){
         try{
