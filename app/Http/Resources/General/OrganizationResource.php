@@ -24,6 +24,7 @@ class OrganizationResource extends JsonResource
         $number_of_members = OrganizationMember::query()->where("organization_id",$this->organization_id)->get()->count();
         return [
             "unique_id"             =>$this->unique_id,
+            'title'=>$this->title,
             "created_by"            =>Str::title($created_by->first_name)." ".Str::title($created_by->last_name),
             "maturity"              =>$this->cycle_period,
             "number_of_cycles"      =>$this->number_of_cycles,
