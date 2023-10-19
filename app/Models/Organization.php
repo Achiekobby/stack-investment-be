@@ -24,6 +24,7 @@ class Organization extends Model
         "commencement_date",
         "status",
         "approval",
+        "max_number_of_members"
     ];
 
     protected $guarded = ["created_at","updated_at"];

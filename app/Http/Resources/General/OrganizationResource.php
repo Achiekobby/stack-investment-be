@@ -23,15 +23,16 @@ class OrganizationResource extends JsonResource
         $created_by = User::query()->where("id", $this->user_id)->first();
         $number_of_members = OrganizationMember::query()->where("organization_id",$this->organization_id)->get()->count();
         return [
-            "unique_id"=>$this->unique_id,
-            "created_by"=>Str::title($created_by->first_name)." ".Str::title($created_by->last_name),
-            "cycle_period"=>$this->cycle_period,
-            "number_of_cycles"=>$this->number_of_cycles,
-            "number_of_members"=>$number_of_members,
+            "unique_id"             =>$this->unique_id,
+            "created_by"            =>Str::title($created_by->first_name)." ".Str::title($created_by->last_name),
+            "maturity"              =>$this->cycle_period,
+            "number_of_cycles"      =>$this->number_of_cycles,
+            "number_of_members"     =>$this->number_of_participants,
+            "max_number_of_members" =>$this->max_number_of_members,
             "total_amount_per_cycle"=>number_format((float)$this->amount_per_cycle,2,'.',''),
-            "commencement_date"=>$this->commencement_date,
-            "status"=>$this->status,
-            "members"=>OrganizationMembersResource::collection($this->members),
+            "commencement_date"     =>$this->commencement_date,
+            "status"                =>$this->status,
+            "members"               =>OrganizationMembersResource::collection($this->members),
         ];
     }
 }

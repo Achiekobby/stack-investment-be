@@ -788,31 +788,32 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Post(
-        * path="/api/v1/user/organization/create",
-        * operationId="UserCreateOrganization",
-        * tags={"P2P Organization Operations"},
-        * summary="User P2P organization creation",
-        * description="This API allows the user to create a P2P organization  and collate funds from every individual who is added of a cycle period",
+        * path="/api/v1/user/group/create",
+        * operationId="UserCreateGroup",
+        * tags={"P2P group Operations"},
+        * summary="User P2P group creation",
+        * description="This API allows the user to create a P2P group  and collate funds from every individual who is added of a cycle period",
         *     @OA\RequestBody(
         *         @OA\JsonContent(),
         *         @OA\MediaType(
         *            mediaType="multipart/form-data",
         *            @OA\Schema(
         *               type="object",
-        *               required={"title", "description","cycle_period","amount_per_member","start_date"},
-        *               @OA\Property(property="title", type="string",example="Sample P2P organization"),
-        *               @OA\Property(property="description", type="text",example="Sample Description for the P2P organization"),
-        *               @OA\Property(property="cycle_period", type="string",example="Weekly/Monthly/Quarterly/Midyear/Yearly"),
+        *               required={"title", "description","maturity","amount_per_member","start_date","number_of_members"},
+        *               @OA\Property(property="title", type="string",example="Sample P2P group"),
+        *               @OA\Property(property="description", type="text",example="Sample Description for the P2P group"),
+        *               @OA\Property(property="maturity", type="string",example="Weekly/Monthly/Quarterly/Midyear/Yearly"),
         *               @OA\Property(property="amount_per_member", type="string",example="100.00"),
+        *               @OA\Property(property="number_of_members", type="string",example="1"),
         *            ),
         *        ),
         *    ),
         *      @OA\Response(
         *          response=201,
-        *          description="Added new P2P organization  project Successfully",
+        *          description="Added new P2P group  project Successfully",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="organization",type="string", example="A JSON Object of the details for the organization"),
+        *              @OA\Property(property="group",type="string", example="A JSON Object of the details for the group"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -845,18 +846,18 @@ use Illuminate\Routing\Controller as BaseController;
 
 
         * @OA\Get(
-        * path="/api/v1/user/organization/show/all",
-        * operationId="ExtractP2POrganizationProjects",
-        * tags={"P2P Organization Operations"},
-        * summary="Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
-        * description="Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
+        * path="/api/v1/user/group/show/all",
+        * operationId="ExtractP2PGroupProjects",
+        * tags={"P2P group Operations"},
+        * summary="Extract all groups a logged in user has been part of regardless of whether it has been closed or not",
+        * description="Extract all groups a logged in user has been part of regardless of whether it has been closed or not",
 
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
+        *          description="Successfully Extract all groups a logged in user has been part of regardless of whether it has been closed or not",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="user_organizations",type="string", example="user_organizations:{uuid:...}"),
+        *              @OA\Property(property="user_groups",type="string", example="user_groups:{uuid:...}"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -880,18 +881,18 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Get(
-        * path="/api/v1/user/organization/active/all",
-        * operationId="ExtractActiveP2POrganizationProjects",
-        * tags={"P2P Organization Operations"},
-        * summary="Extract all active P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
-        * description="Extract all active P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
+        * path="/api/v1/user/group/active/all",
+        * operationId="ExtractActiveP2PGroupProjects",
+        * tags={"P2P group Operations"},
+        * summary="Extract all active P2P groups a logged in user has been part of regardless of whether it has been closed or not",
+        * description="Extract all active P2P groups a logged in user has been part of regardless of whether it has been closed or not",
 
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully Extract all P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
+        *          description="Successfully Extract all P2P groups a logged in user has been part of regardless of whether it has been closed or not",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="user_organizations",type="string", example="user_organizations:{uuid:...}"),
+        *              @OA\Property(property="user_groups",type="string", example="user_groups:{uuid:...}"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -915,18 +916,18 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Get(
-        * path="/api/v1/user/organization/show/{unique_id_of_p2p_organization}",
-        * operationId="ExtractDetailsOfP2POrganization",
-        * tags={"P2P Organization Operations"},
-        * summary="User P2P Organization details extraction using the unique id",
-        * description="This API allows the user to extract the details of a P2P organization",
+        * path="/api/v1/user/group/show/{unique_id_of_p2p_group}",
+        * operationId="ExtractDetailsOfP2PGroup",
+        * tags={"P2P group Operations"},
+        * summary="User P2P group details extraction using the unique id",
+        * description="This API allows the user to extract the details of a P2P group",
 
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully retrieved data from the backend about that particular  P2P organization",
+        *          description="Successfully retrieved data from the backend about that particular  P2P group",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="organization",type="string", example="Details of the particular organization extracted in JSON format"),
+        *              @OA\Property(property="group",type="string", example="Details of the particular group extracted in JSON format"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -950,11 +951,11 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Patch(
-        * path="/api/v1/user/organization/edit/{unique_id of the P2P organization to be edited}",
-        * operationId="UserUpdateOrganization",
-        * tags={"P2P Organization Operations"},
-        * summary="User P2P organization creation",
-        * description="This API allows the user to update the details a P2P organization",
+        * path="/api/v1/user/group/edit/{unique_id of the P2P group to be edited}",
+        * operationId="UserUpdateGroup",
+        * tags={"P2P group Operations"},
+        * summary="User P2P group creation",
+        * description="This API allows the user to update the details a P2P group",
         *     @OA\RequestBody(
         *         @OA\JsonContent(),
         *         @OA\MediaType(
@@ -962,8 +963,8 @@ use Illuminate\Routing\Controller as BaseController;
         *            @OA\Schema(
         *               type="object",
         *               required={"title", "description","cycle_period","amount_per_member","start_date"},
-        *               @OA\Property(property="title", type="string",example="Sample P2P organization"),
-        *               @OA\Property(property="description", type="text",example="Sample Description for the P2P organization"),
+        *               @OA\Property(property="title", type="string",example="Sample P2P group"),
+        *               @OA\Property(property="description", type="text",example="Sample Description for the P2P group"),
         *               @OA\Property(property="cycle_period", type="string",example="Weekly/Monthly/Quarterly/Midyear/Yearly"),
         *               @OA\Property(property="amount_per_member", type="string",example="100.00"),
         *            ),
@@ -971,11 +972,11 @@ use Illuminate\Routing\Controller as BaseController;
         *    ),
         *      @OA\Response(
         *          response=201,
-        *          description="Updated new P2P organization  project Successfully",
+        *          description="Updated new P2P group  project Successfully",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="message",type="string", example="Successfully updated the details of this P2P organization"),
-        *              @OA\Property(property="organization",type="string", example="A JSON Object of the details for the organization"),
+        *              @OA\Property(property="message",type="string", example="Successfully updated the details of this P2P group"),
+        *              @OA\Property(property="group",type="string", example="A JSON Object of the details for the group"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -1007,18 +1008,18 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Delete(
-        * path="/api/v1/user/project/{unique_id of P2P organization to be deleted}",
-        * operationId="RemoveP2POrganization",
-        * tags={"P2P Organization Operations"},
-        * summary="Remove P2P organization",
-        * description="This API allows the logged user to remove P2P organization created by them but has not been initiated or approved. Meaning this organization has to be inactive and must have been created by the logged in user",
+        * path="/api/v1/user/project/{unique_id of P2P group to be deleted}",
+        * operationId="RemoveP2PGroup",
+        * tags={"P2P group Operations"},
+        * summary="Remove P2P group",
+        * description="This API allows the logged user to remove P2P group created by them but has not been initiated or approved. Meaning this group has to be inactive and must have been created by the logged in user",
 
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully removed P2P organization initiated by the logged in user",
+        *          description="Successfully removed P2P group initiated by the logged in user",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="message",type="string", example="Great, you have successfully removed this organization"),
+        *              @OA\Property(property="message",type="string", example="Great, you have successfully removed this group"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -1026,7 +1027,7 @@ use Illuminate\Routing\Controller as BaseController;
         *          description="Error during the processing of the request=>Bad request",
                     @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="failed"),
-        *              @OA\Property(property="project",type="string", example="You are not the team leader of the organization you are trying to remove"),
+        *              @OA\Property(property="project",type="string", example="You are not the team leader of the group you are trying to remove"),
         *           ),
         *       ),
         *       @OA\Response(
@@ -1043,14 +1044,14 @@ use Illuminate\Routing\Controller as BaseController;
 
 
         * @OA\Get(
-        * path="/api/v1/user/organization/search_users",
-        * operationId="SearchRegisteredUsersForP2POrganization",
-        * tags={"P2P Organization Operations"},
-        * summary="Searching through all registered users to enable the team leader add members to their organizations",
-        * description="Searching through all registered users to enable the team leader add members to their organizations",
+        * path="/api/v1/user/group/search_users",
+        * operationId="SearchRegisteredUsersForP2PGroup",
+        * tags={"P2P group Operations"},
+        * summary="Searching through all registered users to enable the team leader add members to their groups",
+        * description="Searching through all registered users to enable the team leader add members to their groups",
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully retrieved registered users after the search to select the suitable one for the organization",
+        *          description="Successfully retrieved registered users after the search to select the suitable one for the group",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
         *              @OA\Property(property="user",type="string", example={"user:[]"}),
@@ -1078,11 +1079,11 @@ use Illuminate\Routing\Controller as BaseController;
 
 
         * @OA\Post(
-        * path="/api/v1/user/organization/member/add/{unique_id_of_p2p_organization}",
-        * operationId="AddNewMemberToP2POrganization",
-        * tags={"P2P Organization Operations"},
-        * summary="Adding new member to the P2P Organization specified by the unique id provided",
-        * description="This API allows the team leader of a P2P Organization to add a new member to an organization",
+        * path="/api/v1/user/group/member/add/{unique_id_of_p2p_group}",
+        * operationId="AddNewMemberToP2PGroup",
+        * tags={"P2P group Operations"},
+        * summary="Adding new member to the P2P group specified by the unique id provided",
+        * description="This API allows the team leader of a P2P group to add a new member to an group",
         * @OA\RequestBody(
         *         @OA\JsonContent(),
         *         @OA\MediaType(
@@ -1096,10 +1097,10 @@ use Illuminate\Routing\Controller as BaseController;
         *    ),
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully added a new member to the P2P organization by the team leader",
+        *          description="Successfully added a new member to the P2P group by the team leader",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="organization",type="string", example="Great, new member has been added to this organization"),
+        *              @OA\Property(property="group",type="string", example="Great, new member has been added to this group"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -1240,17 +1241,17 @@ use Illuminate\Routing\Controller as BaseController;
 
 
         * @OA\Get(
-        * path="/api/v1/admin/organizations/all",
-        * operationId="AllOrganizationsForAdminDashboard",
+        * path="/api/v1/admin/groups/all",
+        * operationId="AllgroupsForAdminDashboard",
         * tags={"Admin Operations"},
-        * summary="Extracting all the organizations",
-        * description="Extracting all the P2P organizations to be displayed on the dashboard",
+        * summary="Extracting all the groups",
+        * description="Extracting all the P2P groups to be displayed on the dashboard",
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully retrieved all the P2P organization",
+        *          description="Successfully retrieved all the P2P group",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="organizations",type="string", example={"organizations:[]"}),
+        *              @OA\Property(property="groups",type="string", example={"groups:[]"}),
         *           ),
         *       ),
         *      @OA\Response(
@@ -1273,17 +1274,17 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
         * @OA\Get(
-        * path="/api/v1/admin/approve/organization/{unique_id of the P2P organization}",
-        * operationId="ApproveP2POrganization",
+        * path="/api/v1/admin/approve/group/{unique_id of the P2P group}",
+        * operationId="ApproveP2Pgroup",
         * tags={"Admin Operations"},
-        * summary="Approving the specified P2P Organization",
-        * description="This enables the admin to approve the P2P Organization",
+        * summary="Approving the specified P2P group",
+        * description="This enables the admin to approve the P2P group",
         *      @OA\Response(
         *          response=200,
-        *          description="Successfully approved a specified P2P Organization",
+        *          description="Successfully approved a specified P2P group",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="message",type="string", example="You successfully approved this P2P organization"),
+        *              @OA\Property(property="message",type="string", example="You successfully approved this P2P group"),
         *           ),
         *       ),
         *      @OA\Response(
@@ -1308,11 +1309,11 @@ use Illuminate\Routing\Controller as BaseController;
 
 
         * @OA\Post(
-        * path="/api/v1/admin/reject/organization",
-        * operationId="RejectP2POrganization",
+        * path="/api/v1/admin/reject/group",
+        * operationId="RejectP2Pgroup",
         * tags={"Admin Operations"},
-        * summary="Reject a specified P2P Organization",
-        * description="This API allows the admin or super admin to reject a specified P2P Organization",
+        * summary="Reject a specified P2P group",
+        * description="This API allows the admin or super admin to reject a specified P2P group",
         * @OA\RequestBody(
         *         @OA\JsonContent(),
         *         @OA\MediaType(
@@ -1321,7 +1322,7 @@ use Illuminate\Routing\Controller as BaseController;
         *               type="object",
         *               required={"unique_id","reason"},
         *               @OA\Property(property="unique_id", type="string",example="55970a2d-cc..."),
-        *               @OA\Property(property="reason", type="string",example="Reason for the rejection of the P2P Organization"),
+        *               @OA\Property(property="reason", type="string",example="Reason for the rejection of the P2P group"),
         *            ),
         *        ),
         *    ),
@@ -1330,7 +1331,7 @@ use Illuminate\Routing\Controller as BaseController;
         *          description="Successfully rejected specified crowdfunding project",
         *          @OA\JsonContent(
         *              @OA\Property(property="status",type="string", example="success"),
-        *              @OA\Property(property="message",type="string", example="Successfully rejected this P2P Organization"),
+        *              @OA\Property(property="message",type="string", example="Successfully rejected this P2P group"),
         *           ),
         *       ),
         *      @OA\Response(

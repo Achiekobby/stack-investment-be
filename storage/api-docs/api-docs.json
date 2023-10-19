@@ -1780,14 +1780,14 @@
                 }
             }
         },
-        "/api/v1/user/organization/create": {
+        "/api/v1/user/group/create": {
             "post": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "User P2P organization creation",
-                "description": "This API allows the user to create a P2P organization  and collate funds from every individual who is added of a cycle period",
-                "operationId": "UserCreateOrganization",
+                "summary": "User P2P group creation",
+                "description": "This API allows the user to create a P2P group  and collate funds from every individual who is added of a cycle period",
+                "operationId": "UserCreateGroup",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -1795,26 +1795,31 @@
                                 "required": [
                                     "title",
                                     "description",
-                                    "cycle_period",
+                                    "maturity",
                                     "amount_per_member",
-                                    "start_date"
+                                    "start_date",
+                                    "number_of_members"
                                 ],
                                 "properties": {
                                     "title": {
                                         "type": "string",
-                                        "example": "Sample P2P organization"
+                                        "example": "Sample P2P group"
                                     },
                                     "description": {
                                         "type": "text",
-                                        "example": "Sample Description for the P2P organization"
+                                        "example": "Sample Description for the P2P group"
                                     },
-                                    "cycle_period": {
+                                    "maturity": {
                                         "type": "string",
                                         "example": "Weekly/Monthly/Quarterly/Midyear/Yearly"
                                     },
                                     "amount_per_member": {
                                         "type": "string",
                                         "example": "100.00"
+                                    },
+                                    "number_of_members": {
+                                        "type": "string",
+                                        "example": "1"
                                     }
                                 },
                                 "type": "object"
@@ -1827,7 +1832,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Added new P2P organization  project Successfully",
+                        "description": "Added new P2P group  project Successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1836,9 +1841,9 @@
                                             "type": "string",
                                             "example": "success"
                                         },
-                                        "organization": {
+                                        "group": {
                                             "type": "string",
-                                            "example": "A JSON Object of the details for the organization"
+                                            "example": "A JSON Object of the details for the group"
                                         }
                                     },
                                     "type": "object"
@@ -1912,17 +1917,17 @@
                 }
             }
         },
-        "/api/v1/user/organization/show/all": {
+        "/api/v1/user/group/show/all": {
             "get": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
-                "description": "Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
-                "operationId": "ExtractP2POrganizationProjects",
+                "summary": "Extract all groups a logged in user has been part of regardless of whether it has been closed or not",
+                "description": "Extract all groups a logged in user has been part of regardless of whether it has been closed or not",
+                "operationId": "ExtractP2PGroupProjects",
                 "responses": {
                     "200": {
-                        "description": "Successfully Extract all organizations a logged in user has been part of regardless of whether it has been closed or not",
+                        "description": "Successfully Extract all groups a logged in user has been part of regardless of whether it has been closed or not",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1931,9 +1936,9 @@
                                             "type": "string",
                                             "example": "success"
                                         },
-                                        "user_organizations": {
+                                        "user_groups": {
                                             "type": "string",
-                                            "example": "user_organizations:{uuid:...}"
+                                            "example": "user_groups:{uuid:...}"
                                         }
                                     },
                                     "type": "object"
@@ -1987,17 +1992,17 @@
                 }
             }
         },
-        "/api/v1/user/organization/active/all": {
+        "/api/v1/user/group/active/all": {
             "get": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "Extract all active P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
-                "description": "Extract all active P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
-                "operationId": "ExtractActiveP2POrganizationProjects",
+                "summary": "Extract all active P2P groups a logged in user has been part of regardless of whether it has been closed or not",
+                "description": "Extract all active P2P groups a logged in user has been part of regardless of whether it has been closed or not",
+                "operationId": "ExtractActiveP2PGroupProjects",
                 "responses": {
                     "200": {
-                        "description": "Successfully Extract all P2P organizations a logged in user has been part of regardless of whether it has been closed or not",
+                        "description": "Successfully Extract all P2P groups a logged in user has been part of regardless of whether it has been closed or not",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2006,9 +2011,9 @@
                                             "type": "string",
                                             "example": "success"
                                         },
-                                        "user_organizations": {
+                                        "user_groups": {
                                             "type": "string",
-                                            "example": "user_organizations:{uuid:...}"
+                                            "example": "user_groups:{uuid:...}"
                                         }
                                     },
                                     "type": "object"
@@ -2062,17 +2067,17 @@
                 }
             }
         },
-        "/api/v1/user/organization/show/{unique_id_of_p2p_organization}": {
+        "/api/v1/user/group/show/{unique_id_of_p2p_group}": {
             "get": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "User P2P Organization details extraction using the unique id",
-                "description": "This API allows the user to extract the details of a P2P organization",
-                "operationId": "ExtractDetailsOfP2POrganization",
+                "summary": "User P2P group details extraction using the unique id",
+                "description": "This API allows the user to extract the details of a P2P group",
+                "operationId": "ExtractDetailsOfP2PGroup",
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved data from the backend about that particular  P2P organization",
+                        "description": "Successfully retrieved data from the backend about that particular  P2P group",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2081,9 +2086,9 @@
                                             "type": "string",
                                             "example": "success"
                                         },
-                                        "organization": {
+                                        "group": {
                                             "type": "string",
-                                            "example": "Details of the particular organization extracted in JSON format"
+                                            "example": "Details of the particular group extracted in JSON format"
                                         }
                                     },
                                     "type": "object"
@@ -2137,14 +2142,14 @@
                 }
             }
         },
-        "/api/v1/user/organization/edit/{unique_id of the P2P organization to be edited}": {
+        "/api/v1/user/group/edit/{unique_id of the P2P group to be edited}": {
             "patch": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "User P2P organization creation",
-                "description": "This API allows the user to update the details a P2P organization",
-                "operationId": "UserUpdateOrganization",
+                "summary": "User P2P group creation",
+                "description": "This API allows the user to update the details a P2P group",
+                "operationId": "UserUpdateGroup",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -2159,11 +2164,11 @@
                                 "properties": {
                                     "title": {
                                         "type": "string",
-                                        "example": "Sample P2P organization"
+                                        "example": "Sample P2P group"
                                     },
                                     "description": {
                                         "type": "text",
-                                        "example": "Sample Description for the P2P organization"
+                                        "example": "Sample Description for the P2P group"
                                     },
                                     "cycle_period": {
                                         "type": "string",
@@ -2184,7 +2189,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Updated new P2P organization  project Successfully",
+                        "description": "Updated new P2P group  project Successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2195,11 +2200,11 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Successfully updated the details of this P2P organization"
+                                            "example": "Successfully updated the details of this P2P group"
                                         },
-                                        "organization": {
+                                        "group": {
                                             "type": "string",
-                                            "example": "A JSON Object of the details for the organization"
+                                            "example": "A JSON Object of the details for the group"
                                         }
                                     },
                                     "type": "object"
@@ -2273,17 +2278,17 @@
                 }
             }
         },
-        "/api/v1/user/project/{unique_id of P2P organization to be deleted}": {
+        "/api/v1/user/project/{unique_id of P2P group to be deleted}": {
             "delete": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "Remove P2P organization",
-                "description": "This API allows the logged user to remove P2P organization created by them but has not been initiated or approved. Meaning this organization has to be inactive and must have been created by the logged in user",
-                "operationId": "RemoveP2POrganization",
+                "summary": "Remove P2P group",
+                "description": "This API allows the logged user to remove P2P group created by them but has not been initiated or approved. Meaning this group has to be inactive and must have been created by the logged in user",
+                "operationId": "RemoveP2PGroup",
                 "responses": {
                     "200": {
-                        "description": "Successfully removed P2P organization initiated by the logged in user",
+                        "description": "Successfully removed P2P group initiated by the logged in user",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2294,7 +2299,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Great, you have successfully removed this organization"
+                                            "example": "Great, you have successfully removed this group"
                                         }
                                     },
                                     "type": "object"
@@ -2314,7 +2319,7 @@
                                         },
                                         "project": {
                                             "type": "string",
-                                            "example": "You are not the team leader of the organization you are trying to remove"
+                                            "example": "You are not the team leader of the group you are trying to remove"
                                         }
                                     },
                                     "type": "object"
@@ -2348,17 +2353,17 @@
                 }
             }
         },
-        "/api/v1/user/organization/search_users": {
+        "/api/v1/user/group/search_users": {
             "get": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "Searching through all registered users to enable the team leader add members to their organizations",
-                "description": "Searching through all registered users to enable the team leader add members to their organizations",
-                "operationId": "SearchRegisteredUsersForP2POrganization",
+                "summary": "Searching through all registered users to enable the team leader add members to their groups",
+                "description": "Searching through all registered users to enable the team leader add members to their groups",
+                "operationId": "SearchRegisteredUsersForP2PGroup",
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved registered users after the search to select the suitable one for the organization",
+                        "description": "Successfully retrieved registered users after the search to select the suitable one for the group",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2425,14 +2430,14 @@
                 }
             }
         },
-        "/api/v1/user/organization/member/add/{unique_id_of_p2p_organization}": {
+        "/api/v1/user/group/member/add/{unique_id_of_p2p_group}": {
             "post": {
                 "tags": [
-                    "P2P Organization Operations"
+                    "P2P group Operations"
                 ],
-                "summary": "Adding new member to the P2P Organization specified by the unique id provided",
-                "description": "This API allows the team leader of a P2P Organization to add a new member to an organization",
-                "operationId": "AddNewMemberToP2POrganization",
+                "summary": "Adding new member to the P2P group specified by the unique id provided",
+                "description": "This API allows the team leader of a P2P group to add a new member to an group",
+                "operationId": "AddNewMemberToP2PGroup",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -2456,7 +2461,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Successfully added a new member to the P2P organization by the team leader",
+                        "description": "Successfully added a new member to the P2P group by the team leader",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2465,9 +2470,9 @@
                                             "type": "string",
                                             "example": "success"
                                         },
-                                        "organization": {
+                                        "group": {
                                             "type": "string",
-                                            "example": "Great, new member has been added to this organization"
+                                            "example": "Great, new member has been added to this group"
                                         }
                                     },
                                     "type": "object"
@@ -2774,17 +2779,17 @@
                 }
             }
         },
-        "/api/v1/admin/organizations/all": {
+        "/api/v1/admin/groups/all": {
             "get": {
                 "tags": [
                     "Admin Operations"
                 ],
-                "summary": "Extracting all the organizations",
-                "description": "Extracting all the P2P organizations to be displayed on the dashboard",
-                "operationId": "AllOrganizationsForAdminDashboard",
+                "summary": "Extracting all the groups",
+                "description": "Extracting all the P2P groups to be displayed on the dashboard",
+                "operationId": "AllgroupsForAdminDashboard",
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved all the P2P organization",
+                        "description": "Successfully retrieved all the P2P group",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2793,10 +2798,10 @@
                                             "type": "string",
                                             "example": "success"
                                         },
-                                        "organizations": {
+                                        "groups": {
                                             "type": "string",
                                             "example": [
-                                                "organizations:[]"
+                                                "groups:[]"
                                             ]
                                         }
                                     },
@@ -2851,17 +2856,17 @@
                 }
             }
         },
-        "/api/v1/admin/approve/organization/{unique_id of the P2P organization}": {
+        "/api/v1/admin/approve/group/{unique_id of the P2P group}": {
             "get": {
                 "tags": [
                     "Admin Operations"
                 ],
-                "summary": "Approving the specified P2P Organization",
-                "description": "This enables the admin to approve the P2P Organization",
-                "operationId": "ApproveP2POrganization",
+                "summary": "Approving the specified P2P group",
+                "description": "This enables the admin to approve the P2P group",
+                "operationId": "ApproveP2Pgroup",
                 "responses": {
                     "200": {
-                        "description": "Successfully approved a specified P2P Organization",
+                        "description": "Successfully approved a specified P2P group",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2872,7 +2877,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "You successfully approved this P2P organization"
+                                            "example": "You successfully approved this P2P group"
                                         }
                                     },
                                     "type": "object"
@@ -2926,14 +2931,14 @@
                 }
             }
         },
-        "/api/v1/admin/reject/organization": {
+        "/api/v1/admin/reject/group": {
             "post": {
                 "tags": [
                     "Admin Operations"
                 ],
-                "summary": "Reject a specified P2P Organization",
-                "description": "This API allows the admin or super admin to reject a specified P2P Organization",
-                "operationId": "RejectP2POrganization",
+                "summary": "Reject a specified P2P group",
+                "description": "This API allows the admin or super admin to reject a specified P2P group",
+                "operationId": "RejectP2Pgroup",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -2949,7 +2954,7 @@
                                     },
                                     "reason": {
                                         "type": "string",
-                                        "example": "Reason for the rejection of the P2P Organization"
+                                        "example": "Reason for the rejection of the P2P group"
                                     }
                                 },
                                 "type": "object"
@@ -2973,7 +2978,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Successfully rejected this P2P Organization"
+                                            "example": "Successfully rejected this P2P group"
                                         }
                                     },
                                     "type": "object"

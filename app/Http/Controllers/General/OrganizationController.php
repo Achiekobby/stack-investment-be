@@ -66,30 +66,45 @@ class OrganizationController extends Controller
             $organization = DB::transaction(function() use ($user, $req) {
                 $title              = $req->validated(['title']);
                 $description        = $req->validated(['description']);
-                $cycle_period       = $req->validated(['cycle_period']);
+                $maturity           = $req->validated(['maturity']);
+                $number_of_members  = $req->validated(['number_of_members']);
                 $amount_per_member  = $req->validated(['amount_per_member']);
                 $start_date         = $req->validated(['start_date']);
+
+                //* check if the number of  members exceeds 12 or below 3
+                if(request()->number_of_members <3 || request()->number_of_members >12){
+                    return response()->json(['status'=>'failed','message'=>'Sorry, the minimum number of members to add is 3 and max number of 12'],400);
+                }
+
 
                 $new_organization = Organization::query()->create([
                     "unique_id"         =>Str::uuid(),
                     "user_id"           =>$user->id,
                     "number_of_participants"=>1,
                     "title"             =>$title,
-                    "description"       =>$description,
-                    "cycle_period"      =>$cycle_period,
+                    "max_number_of_members"=>request()->number_of_members ,
+                    "description"       =>$description ?? null,
+                    "cycle_period"      =>$maturity,
+                    "currency"          =>"GHS",
+                    "number_of_cycles"  =>request()->number_of_members,
                     "commencement_date" =>$start_date,
                     "amount_per_member" =>$amount_per_member,
-                    "status"            =>"inactive"
+                    "amount_per_cycle"  =>number_format((float)(request()->number_of_members*$amount_per_member),2,'.',''),
+                    "status"            =>"inactive",
+                    "approval"          =>"pending"
                 ]);
 
                 //* create the team leader
                 $new_organization->members()->create([
                     "user_id"=>$user->id,
-                    "role"=>"team_leader",
+                    "role"=>"group_admin",
                     "name"=>$user->first_name." ".$user->last_name,
                     "phone_number"=>$user->phone_number,
                     "email"=>$user->email,
-                    "status"=>"active"
+                    "status"=>"active",
+                    "amount_to_be_taken"=>number_format((float)(request()->number_of_members*$amount_per_member),2,'.',''),
+                    "number_of_payments"=>request()->number_of_members,
+                    "received_benefit"=>"false"
                 ]);
 
                 return $new_organization;
@@ -140,22 +155,38 @@ class OrganizationController extends Controller
             }
 
             //* update the organization
-            $title              = $req->validated(['title']);
-            $description        = $req->validated(['description']);
-            $cycle_period       = $req->validated(['cycle_period']);
-            $amount_per_member  = $req->validated(['amount_per_member']);
-            $start_date         = $req->validated(['start_date']);
+                $title              = $req->validated(['title']);
+                $description        = $req->validated(['description']);
+                $maturity           = $req->validated(['maturity']);
+                $number_of_members  = $req->validated(['number_of_members']);
+                $amount_per_member  = $req->validated(['amount_per_member']);
+                $start_date         = $req->validated(['start_date']);
+
+                //* check if the number of  members exceeds 12 or below 3
+                if(request()->number_of_members <3 || request()->number_of_members >12){
+                    return response()->json(['status'=>'failed','message'=>'Sorry, the minimum number of members to add is 3 and max number of 12'],400);
+                }
+
+                //* if the number of members is less than already added
+                if(request()->number_of_members < $organization->number_of_participants){
+                    return response()->json(['status'=>'failed','message'=>'Sorry, you have included more users to this group than the max number of participants specified for this group'],400);
+                }
+
 
             $updated_organization = $organization->update([
-                "unique_id"         =>$organization->unique_id,
                 "user_id"           =>$user->id,
                 "number_of_participants"=>$organization->number_of_participants,
                 "title"             =>$title,
-                "description"       =>$description,
-                "cycle_period"      =>$cycle_period,
+                "max_number_of_members"=>request()->number_of_members,
+                "description"       =>$description ?? null,
+                "cycle_period"      =>$maturity,
+                "currency"          =>"GHS",
+                "number_of_cycles"  =>request()->number_of_members,
                 "commencement_date" =>$start_date,
                 "amount_per_member" =>$amount_per_member,
-                "status"            =>"inactive"
+                "amount_per_cycle"  =>number_format((float)(request()->number_of_members*$amount_per_member),2,'.',''),
+                "status"            =>"inactive",
+                "approval"          =>"pending"
             ]);
             if($updated_organization){
                 return response()->json(['status'=>'success',"message"=>"Organization updated successfully"],200);
@@ -266,6 +297,12 @@ class OrganizationController extends Controller
                 return response()->json(['status'=>"failed","message"=>"Sorry, this organization does not belong to you"],400);
             }
 
+            //* checking the number of members added so far so that the members do not exceed the 12 member threshold
+            $members = $organization->members;
+            if(count($members) >=12){
+                return response()->json(['status'=>'failed','message'=>'Sorry, you have exceeded the number of members to add to this scheme!!'],400);
+            }
+
             //* data needed for the creating a member of an organization
             $user_id    = $member->id;
             $role       = "member";
@@ -278,7 +315,11 @@ class OrganizationController extends Controller
                 "role"  =>$role,
                 "name"  =>$name,
                 "email" =>$email,
-                "phone_number" =>$phone
+                "phone_number" =>$phone,
+                "status"=>"active",
+                "amount_to_be_taken"=>number_format((float)($organization->amount_per_member * $organization->number_of_cycles),2,'.',''),
+                "number_of_payments"=>$organization->max_number_of_members,
+                "received_benefit"=>"false"
             ]);
 
             if($new_member){

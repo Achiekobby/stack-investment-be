@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\General\OrganizationController;
 
 
-Route::group(["prefix"=>"user/organization/"], function(){
+Route::group(["prefix"=>"user/group/"], function(){
 
     //Tip:: Create a new organization
     Route::post("create",[OrganizationController::class,"create_organization"]);
