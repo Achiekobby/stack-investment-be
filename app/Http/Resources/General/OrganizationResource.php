@@ -25,6 +25,7 @@ class OrganizationResource extends JsonResource
         return [
             "unique_id"             =>$this->unique_id,
             'title'=>$this->title,
+            'description'=>$this->description,
             "created_by"            =>Str::title($created_by->first_name)." ".Str::title($created_by->last_name),
             "maturity"              =>$this->cycle_period,
             "number_of_cycles"      =>$this->number_of_cycles,
