@@ -37,6 +37,7 @@ class OrganizationController extends Controller
         }
     }
 
+    //TODO=> Extract all the groups created by the logged in user
     public function extract_user_group(){
         try{
             $user = auth()->guard('api')->user();
@@ -85,7 +86,7 @@ class OrganizationController extends Controller
                 $maturity           = $req->validated(['maturity']);
                 $number_of_members  = $req->validated(['number_of_members']);
                 $amount_per_member  = $req->validated(['amount_per_member']);
-                $start_date         = $req->validated(['start_date']);
+                // $start_date         = $req->validated(['start_date']);
 
                 //* check if the number of  members exceeds 12 or below 3
                 if(request()->number_of_members <3 || request()->number_of_members >12){
@@ -103,7 +104,7 @@ class OrganizationController extends Controller
                     "cycle_period"      =>$maturity,
                     "currency"          =>"GHS",
                     "number_of_cycles"  =>request()->number_of_members,
-                    "commencement_date" =>$start_date,
+                    "commencement_date" =>null,
                     "amount_per_member" =>$amount_per_member,
                     "amount_per_cycle"  =>number_format((float)(request()->number_of_members*$amount_per_member),2,'.',''),
                     "status"            =>"inactive",

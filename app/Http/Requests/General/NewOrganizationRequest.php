@@ -26,7 +26,7 @@ class NewOrganizationRequest extends FormRequest
             "description"       =>"nullable|string",
             "maturity"          =>"required|string",
             "amount_per_member"  =>"required|string",
-            "start_date"        =>"required|string",
+            // "start_date"        =>"required|string",
             "number_of_members" =>"required"
         ];
     }
