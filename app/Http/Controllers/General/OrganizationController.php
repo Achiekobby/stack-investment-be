@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\User;
+use App\Models\Invitation;
 
 //* Requests
 use App\Http\Requests\General\NewOrganizationRequest;
@@ -21,6 +22,9 @@ use App\Http\Resources\User\UserDetailsResource;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+
+//* Notifications
+use App\Notifications\InvitationNotification;
 
 class OrganizationController extends Controller
 {
@@ -51,6 +55,61 @@ class OrganizationController extends Controller
 
         }catch(\Exception $e){
             return response()->json(['status'=>'failed','message'=>$e->getMessage],500);
+        }
+    }
+
+    //TODO=> Invite a user to the group
+    public function invite_user_to_group(){
+        try{
+            $rules = [
+                "email"=>'required|email',
+                "group_uuid"=>"required|string"
+            ];
+
+            $validation = Validator::make(request()->all(),$rules);
+            if($validation->fails()){
+                return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],422);
+            }
+
+            $logged_in_user = auth()->guard('api')->user();
+            if(!$logged_in_user){
+                return response()->json(['status'=>'failed','message'=>'User not found!'],404);
+            }
+            $group  = Organization::query()->where('unique_id',request()->group_uuid)
+                                            ->where('user_id',$logged_in_user->id)
+                                            ->where('status','active')
+                                            ->where('approval','approved')
+                                            ->first();
+            if(!$group){
+                return response()->json(['status'=>'failed','message'=>'Sorry, this group does not meet the requirement for an invite'],400);
+            }
+
+            $invited_user = User::query()->where('email',request()->email)->first();
+            //* send invite notifications for the user
+            $new_invite = $group->invitations()->updateOrCreate(["email"=>$invited_user->email,"organization_id"=>$group->id],[
+                "uuid"          =>Str::uuid(),
+                "user_name"     =>Str::title($invited_user->first_name." ". $invited_user->last_name),
+                "email"         =>$invited_user->email,
+                "user_phone"    =>$invited_user->phone_number,
+                "link"          =>null,
+                "status"        =>"pending"
+            ]);
+
+            //* email_data
+            $mail_data = [
+                "user_name"     =>Str::title($invited_user->first_name." ". $invited_user->last_name),
+                'user_phone'    =>$invited_user->phone_number,
+                "email"         =>$invited_user->email,
+                "group_title"   =>$group->title,
+                "link"          =>config('services.url.frontend_url')
+            ];
+
+            $invited_user->notify(new InvitationNotification($mail_data));
+
+            return response()->json(['status'=>'success','message'=>'Great, you have invited this user'],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
         }
     }
 
@@ -99,7 +158,7 @@ class OrganizationController extends Controller
                     "user_id"           =>$user->id,
                     "number_of_participants"=>1,
                     "title"             =>$title,
-                    "max_number_of_members"=>request()->number_of_members ,
+                    "max_number_of_members"=>request()->number_of_members,
                     "description"       =>$description ?? null,
                     "cycle_period"      =>$maturity,
                     "currency"          =>"GHS",

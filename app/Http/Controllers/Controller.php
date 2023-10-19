@@ -915,6 +915,60 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
 
+                  * @OA\Post(
+        * path="/api/v1/user/group/invite",
+        * operationId="UserInviteToGroup",
+        * tags={"P2P group Operations"},
+        * summary="User P2P group Invite",
+        * description="This API allows the creator of a group to send out invite to the people they want to add to the group",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"email", "group_uuid"},
+        *               @OA\Property(property="email", type="string",example="example@gmail.com"),
+        *               @OA\Property(property="group_uuid", type="text",example="2342rwer3.."),
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Group invitation Successfully sent",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="group",type="string", example="Great, you have invited this user"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="Sorry, login encountered a problem. please try again later"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="request payload error"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User not found",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
         * @OA\Get(
         * path="/api/v1/user/group/active/all",
         * operationId="ExtractActiveP2PGroupProjects",

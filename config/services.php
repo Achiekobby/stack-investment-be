@@ -37,7 +37,8 @@ return [
     ],
 
     'url'=>[
-        'image_path'=>env('APP_URL')."/uploads"."/"
+        'image_path'=>env('APP_URL')."/uploads"."/",
+        "frontend_url"=>env('FRONTEND_URL')
     ],
 
     'payment_url'=>[
