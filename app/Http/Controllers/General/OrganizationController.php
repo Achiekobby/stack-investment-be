@@ -192,6 +192,22 @@ class OrganizationController extends Controller
         }
     }
 
+    //TODO=> Search list of users using the email
+    public function search_users(){
+        try{
+
+            $email = request()->email;
+            $user = User::where('email',$email)->first();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'No user has the specified email address'],404);
+            }
+            return response()->json(['status'=>'success','user'=>new UserDetailsResource($user)],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>"failed",'message'=>$e->getMessage()],500);
+        }
+    }
+
     //TODO=> Extract all organizations a logged in user has been part of which is still active.
     public function active_organizations(){
         try{

@@ -22,6 +22,9 @@ Route::group(["prefix"=>"user/group/"], function(){
     //Tip:: Handle the invitation by the invited user
     Route::post('handle/invite',[OrganizationController::class,'handle_invitation']);
 
+    //Tip:: Search user by email address
+    Route::post("search/email",[OrganizationController::class,'search_users']);
+
     //Tip:: Search through registered users for people the team leader might want to include in an organization.
     Route::get("search_users",[OrganizationController::class,"search_registered_users"]);
 
