@@ -130,6 +130,68 @@ class OrganizationController extends Controller
         }
     }
 
+    //TODO=>Accept or Decline an Invitation to a group
+    public function handle_invitation(){
+        try{
+            $rules =[
+                "response"=>"required|string",
+                "invitation_uuid"=>"required|string",
+            ];
+
+            $invitation_uuid = request()->invitation_uuid;
+
+            $validation = Validator::make(request()->all(),$rules);
+            if($validation->fails()){
+                return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],422);
+            }
+
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'Sorry, user not found'],404);
+            }
+            if(request()->response === "accepted"){
+                //* extract the invitation to be accepted
+                $invitation = Invitation::query()->where('email', $user->email)->where('uuid',$invitation_uuid)->where('status','=','pending')->first();
+                if(!$invitation){
+                    return response()->json(['status'=>'failed','message'=>'Sorry, This invitation has already have already been declined or Accepted'],400);
+                }
+
+                //* update the invitation to accepted
+                $invitation->update(['status'=>'accepted']);
+
+                //* find the corresponding group to be added
+                $group = Organization::where('id',$invitation->organization_id)->first();
+                $group->update(['number_of_participants'=>$group->number_of_participants+1]);
+                $group->members()->create([
+                    "user_id"=>$user->id,
+                    "role"=>"member",
+                    "name"=>$user->first_name." ".$user->last_name,
+                    "phone_number"=>$user->phone_number,
+                    "email"=>$user->email,
+                    "status"=>"active",
+                    "amount_to_be_taken"=>number_format((float)($group->amount_per_cycle),2,'.',''),
+                    "number_of_payments"=>$group->max_number_of_members,
+                    "received_benefit"=>"false"
+                ]);
+
+                return response()->json(['status'=>'success','message'=>'Great, you have successfully accepted this invite'],200);
+            }
+            else if(request()->response ==="declined"){
+                //* extract the invitation to be accepted
+                $invitation = Invitation::query()->where('email', $user->email)->where('uuid',$invitation_uuid)->where('status','=','pending')->first();
+                if(!$invitation){
+                    return response()->json(['status'=>'failed','message'=>'Sorry, This invitation has already have already been accepted or declined'],400);
+                }
+                $invitation->update(['status'=>'declined']);
+
+                return response()->json(['status'=>'success','message'=>'Great, you have successfully declined this invite'],200);
+            }
+
+        }catch(\Exception $e){
+            return response()->json(array('status'=>'failed','message'=>$e->getMessage()),500);
+        }
+    }
+
     //TODO=> Extract all organizations a logged in user has been part of which is still active.
     public function active_organizations(){
         try{

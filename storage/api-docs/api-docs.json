@@ -2263,6 +2263,127 @@
                 }
             }
         },
+        "/api/v1/user/group/handle/invite": {
+            "post": {
+                "tags": [
+                    "P2P group Operations"
+                ],
+                "summary": "User P2P group Invite handling to whether accept or decline the invite",
+                "description": "User P2P group Invite handling to whether accept or decline the invite",
+                "operationId": "UserHandleInviteToGroup",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "invitation_uuid",
+                                    "response"
+                                ],
+                                "properties": {
+                                    "invitation_uuid": {
+                                        "type": "string",
+                                        "example": "22a7ecb8-..."
+                                    },
+                                    "response": {
+                                        "type": "text",
+                                        "example": "accepted/declined"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Group invitation accepting or declining Successfully done",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "group": {
+                                            "type": "string",
+                                            "example": "Great, you successfully changed the status of your invite"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, login encountered a problem. please try again later"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "request payload error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/v1/user/group/active/all": {
             "get": {
                 "tags": [

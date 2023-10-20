@@ -19,6 +19,9 @@ Route::group(["prefix"=>"user/group/"], function(){
     //Tip:: extract all pending invites for a logged in user
     Route::get('pending/invites',[OrganizationController::class,'extract_all_user_invites']);
 
+    //Tip:: Handle the invitation by the invited user
+    Route::post('handle/invite',[OrganizationController::class,'handle_invitation']);
+
     //Tip:: Search through registered users for people the team leader might want to include in an organization.
     Route::get("search_users",[OrganizationController::class,"search_registered_users"]);
 
