@@ -28,6 +28,9 @@ Route::group(["prefix"=>"user/group/"], function(){
     //Tip:: Search through registered users for people the team leader might want to include in an organization.
     Route::get("search_users",[OrganizationController::class,"search_registered_users"]);
 
+    //Tip:: extract all the invitations for a group the logged in user created
+    Route::get('invitations/{group_uuid}',[OrganizationController::class,'get_all_invitation_per_group']);
+
     //Tip:: Show all the organization a user is part of regardless of the status of the organization
     Route::get("show/all",[OrganizationController::class,"index"]);
 

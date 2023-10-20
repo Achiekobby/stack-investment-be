@@ -226,6 +226,27 @@ class OrganizationController extends Controller
         }
     }
 
+    //TODO=> extract all the invitations for an organization
+    public function get_all_invitation_per_group($group_uuid){
+        try{
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'User not found'],404);
+            }
+
+            //* extract the group
+            $group = Organization::where('unique_id',$group_uuid)->where('user_id',$user->id)->first();
+            if(!$group){
+                return response()->json(['status'=>'failed','message'=>'Sorry, Group not found'],404);
+            }
+            $invitations = $group->invitations;
+            return response()->json(['status'=>'success','invitations'=>InvitationResource::collection($invitations)],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
     //TODO=> Create a new organization and submit for approval
     public function create_organization(NewOrganizationRequest $req){
         try{

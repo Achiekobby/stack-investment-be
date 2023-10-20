@@ -1148,6 +1148,42 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Get(
+        * path="/api/v1/user/group/invitations/{group_unique_id}",
+        * operationId="ExtractGroupInvitationsForAUser",
+        * tags={"P2P group Operations"},
+        * summary="Extract all invitations of a group a user created regardless of the state",
+        * description="Extract all invitations of a group regardless of the status",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully Extract all P2P group invitations",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="user_groups",type="string", example="invitations:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
+        * @OA\Get(
         * path="/api/v1/user/group/show/{unique_id_of_p2p_group}",
         * operationId="ExtractDetailsOfP2PGroup",
         * tags={"P2P group Operations"},

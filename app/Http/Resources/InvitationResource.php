@@ -20,6 +20,7 @@ class InvitationResource extends JsonResource
             "user_name"     =>$this->user_name,
             "email"         =>$this->email,
             "user_phone"    =>$this->user_phone,
+            "status"        =>$this->status,
             "group_details" =>new InvitationGroupDetailsResource($this->organization)
         ];
     }
