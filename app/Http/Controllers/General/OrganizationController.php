@@ -92,7 +92,7 @@ class OrganizationController extends Controller
                 "user_name"     =>Str::title($invited_user->first_name." ". $invited_user->last_name),
                 "email"         =>$invited_user->email,
                 "user_phone"    =>$invited_user->phone_number,
-                "link"          =>null,
+                "link"          =>config("services.url.frontend_url")."groups/invitations",
                 "status"        =>"pending"
             ]);
 
@@ -102,7 +102,7 @@ class OrganizationController extends Controller
                 'user_phone'    =>$invited_user->phone_number,
                 "email"         =>$invited_user->email,
                 "group_title"   =>$group->title,
-                "link"          =>config('services.url.frontend_url')
+                "link"          =>config("services.url.frontend_url")."groups/invitations",
             ];
 
             $invited_user->notify(new InvitationNotification($mail_data));
