@@ -16,6 +16,9 @@ Route::group(["prefix"=>"user/group/"], function(){
     //Tip:: Send invite to a group
     Route::post("invite",[OrganizationController::class,"invite_user_to_group"]);
 
+    //Tip:: extract all pending invites for a logged in user
+    Route::get('pending/invites',[OrganizationController::class,'extract_all_user_invites']);
+
     //Tip:: Search through registered users for people the team leader might want to include in an organization.
     Route::get("search_users",[OrganizationController::class,"search_registered_users"]);
 

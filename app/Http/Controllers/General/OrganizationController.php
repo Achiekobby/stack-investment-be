@@ -17,6 +17,7 @@ use App\Http\Requests\General\NewOrganizationRequest;
 //* Resources
 use App\Http\Resources\General\OrganizationResource;
 use App\Http\Resources\User\UserDetailsResource;
+use App\Http\Resources\InvitationResource;
 
 //* Utilities
 use Illuminate\Support\Str;
@@ -107,6 +108,22 @@ class OrganizationController extends Controller
             $invited_user->notify(new InvitationNotification($mail_data));
 
             return response()->json(['status'=>'success','message'=>'Great, you have invited this user'],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
+    //TODO=> List all invites of a user
+    public function extract_all_user_invites(){
+        try{
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'Sorry, user not found'],404);
+            }
+
+            $invites = Invitation::where('email',$user->email)->where('status','pending')->get();
+            return response()->json(['status'=>'success','invites'=>InvitationResource::collection($invites)],200);
 
         }catch(\Exception $e){
             return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);

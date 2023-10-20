@@ -22,7 +22,7 @@ class InvitationGroupDetailsResource extends JsonResource
             "maturity_period"   =>$this->cycle_period,
             "invitation_link"   =>$this->link,
             "status"            =>$this->status,
-            "created_at"        =>Carbon::createFromFormat('Y-m-d H:i:s',$created_at)->format('Y-m-d')
+            "created_at"        =>Carbon::createFromFormat('Y-m-d H:i:s',$this->created_at)->format('Y-m-d')
         ];
     }
 }

@@ -970,6 +970,41 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Get(
+        * path="/api/v1/user/group/pending/invites",
+        * operationId="ExtractUserPendingInvitesForGroup",
+        * tags={"P2P group Operations"},
+        * summary="Extract all pending invites of P2P groups",
+        * description="Extract all pending invites of P2P groups",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully Extract all pending invites of P2P groups",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="user_groups",type="string", example="invites:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
         * path="/api/v1/user/group/active/all",
         * operationId="ExtractActiveP2PGroupProjects",
         * tags={"P2P group Operations"},
