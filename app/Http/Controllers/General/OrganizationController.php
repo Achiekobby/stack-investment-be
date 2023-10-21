@@ -10,6 +10,7 @@ use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\User;
 use App\Models\Invitation;
+use App\Models\ContributionCycle;
 
 //* Requests
 use App\Http\Requests\General\NewOrganizationRequest;
@@ -242,6 +243,52 @@ class OrganizationController extends Controller
             $invitations = $group->invitations;
             return response()->json(['status'=>'success','invitations'=>InvitationResource::collection($invitations)],200);
 
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
+    //TODO=> Indicate the commencement of the group after it has been approved by the Application Admin
+    public function commence_group_contribution(){
+        try{
+            $rules = [
+                "group_uuid"=>"required|string",
+                "recipient_id"=>"required|string"
+            ];
+            $group = Organization::query()->where('unique_id', request()->group_uuid)->where('status','inactive')->where('approval','approved')->first();
+            if(!$group){
+                return response()->json(['status'=>'failed','message'=>'Sorry, Group not found or pending approval from system admin'],400);
+            }
+
+            //* checking if the recipient is a member of the group
+            $organization_member = $group->members()->where('user_id',request()->recipient_id)->first();
+            if(!$organization_member){
+                return response()->json(['status'=>'failed','message'=>'Sorry, recipient must be a member of the group'],400);
+            }
+
+            //* update the status of the group
+            $group->update(['status'=>'active']);
+
+            //* computing the cycle number
+            $cycles = ContributionCycle::query()->where("organization_id", $group->id)->where('payment_status','paid')->get();
+            $number_of_cycles = 0;
+            if(count($cycles) ===0){
+                $number_of_cycles = 1;
+            }
+            else{
+                $number_of_cycles = count($cycles);
+            }
+            //* create an entry for the contribution cycle
+            $new_cycle = ContributionCycle::query()->create([
+                'organization_id'       =>$group->id,
+                'recipient_id'          =>request()->recipient_id,
+                'number_of_participants'=>$group->max_number_of_members,
+                'cycle_number'          =>$number_of_cycles,
+                'payment_status'        =>'unpaid',
+                'payment_amount'        =>$group->amount_per_cycle
+            ]);
+
+            return response()->json(['status'=>'success','message'=>'Great, Now you group can start making contributions!'],200);
         }catch(\Exception $e){
             return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
         }

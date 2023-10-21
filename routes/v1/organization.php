@@ -49,4 +49,7 @@ Route::group(["prefix"=>"user/group/"], function(){
     //Tip:: Add new Member to the Organization.
     Route::post("member/add/{unique_id}",[OrganizationController::class,"add_members_to_organization"]);
 
+    //Tip:: Commence a group contribution status to active
+    Route::post("commence",[OrganizationController::class,'commence_group_contribution']);
+
 });

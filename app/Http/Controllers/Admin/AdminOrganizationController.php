@@ -58,7 +58,7 @@ class AdminOrganizationController extends Controller
             }
             $organization->update([
                 'approval'  =>"approved",
-                'status'    =>'active',
+                // 'status'    =>'active',
             ]);
 
             //* Notification to indicate that the organization has been approved
