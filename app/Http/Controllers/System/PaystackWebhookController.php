@@ -9,15 +9,18 @@ use Illuminate\Http\Request;
 use App\Models\ProjectPayment;
 use App\Models\Project;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Contribution;
+use App\Models\Organization;
 
 //* Notifications
 use App\Notifications\CrowdFunding\DonationReceiptNotification;
 use App\Notifications\CrowdFunding\DonorRecipientNotification;
+use App\Notifications\P2P\ContributionReceiptNotification;
 
 //* Utilities
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Notification;
+use Carbon\Carbon;
 
 class PaystackWebhookController extends Controller
 {
@@ -80,10 +83,48 @@ class PaystackWebhookController extends Controller
                 ];
                 $user->notify(new DonorRecipientNotification($data));
             }
+            else if($event->data->metadata->payment_type === "scheme_contribution"){
+                $payment_extra_data = $event->data->metadata;
+
+                //* update the contribution to indicate that it has been paid successfully.
+                $contribution = Contribution::where('id',$payment_extra_data->contribution_id)->first();
+                $contribution->update([
+                    'payment_status'=>'paid',
+                    'payment_date'  =>date("Y-m-d", strtotime($event->data->paid_at))
+                ]);
+
+                $contribution_cycle = $contribution->contribution_cycle()->first();
+                $contribution_cycle->update([
+                    'amount_contributed'=>number_format((float)($event->data->amount/100),2,'.','') + (float)$contribution_cycle->amount_contributed
+                ]);
+
+                //* checking if the contribution for this cycle is complete
+                if($contribution_cycle->amount_contributed != $contribution_cycle->payment_amount){
+                    $contribution_cycle->update(['cycle_status'=>'ongoing']);
+                }
+                else{
+                    $contribution_cycle->update(['cycle_status'=>'complete']);
+                    //* update the organization status to inactive
+                    $group = Organization::where('unique_id',$payment_extra_data->group_uuid)->update(['status'=>'inactive']);
+                }
+
+                //* send a receipt notification to the contributor
+                $user =User::query()->where('id',$payment_extra_data->user_id)->first();
+                $data = [
+                    "name"              =>Str::title($user->first_name." ".$user->last_name),
+                    "contribution_title"=>Str::title($group->title),
+                    "email"             =>$user->email,
+                    'date'              =>date("Y-m-d", strtotime($event->data->paid_at)),
+                    "amount"            =>number_format((float)($event->data->amount/100),2,'.',''),
+                    "payment_method"    =>$event->data->authorization->channel,
+                ];
+                $user->notify(new ContributionReceiptNotification($data));
+            }
         }
     }
 
     public function callback(){
-        return redirect("https://stacksinvestment.com/campaigns/open-campaigns");
+        // return redirect("https://stacksinvestment.com/campaigns/open-campaigns");
+        return redirect("https://stacksinvestment.com");
     }
 }

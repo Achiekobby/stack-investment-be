@@ -17,7 +17,9 @@ class ContributionCycle extends Model
         "number_of_participants",
         "cycle_number",
         "payment_amount",
-        "payment_status"
+        "amount_contributed",
+        "payment_status",
+        "cycle_status",
     ];
 
     protected $guarded = [

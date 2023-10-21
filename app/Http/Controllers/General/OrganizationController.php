@@ -276,7 +276,7 @@ class OrganizationController extends Controller
                 $number_of_cycles = 1;
             }
             else{
-                $number_of_cycles = count($cycles);
+                $number_of_cycles = count($cycles)+1;
             }
             //* create an entry for the contribution cycle
             $new_cycle = ContributionCycle::query()->create([

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string("number_of_participants")->nullable();
             $table->string('cycle_number')->default(1);
             $table->string('payment_amount');
+            $table->string('amount_contributed')->default(0);
             $table->string('payment_status')->default('unpaid');
+            $table->string('cycle_status')->default('ongoing');
             $table->timestamps();
         });
     }
