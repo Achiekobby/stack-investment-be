@@ -38,13 +38,13 @@ Route::group(['prefix'=>'admin'],function(){
     Route::post("reject/project",[AdminCrowdfundingOperationsController::class, 'reject_project']);
 
     //Tip:: List all the organization projects
-    Route::get("organizations/all",[AdminOrganizationController::class,"list_organizations"]);
+    Route::get("groups/all",[AdminOrganizationController::class,"list_organizations"]);
 
     //Tip:: Approving organization project
-    Route::get("approve/organization/{unique_id}",[AdminOrganizationController::class, 'approve_organization']);
+    Route::get("approve/group/{unique_id}",[AdminOrganizationController::class, 'approve_organization']);
 
     //Tip:: Rejecting organization project
-    Route::post("reject/organization",[AdminOrganizationController::class, 'reject_organization']);
+    Route::post("reject/group",[AdminOrganizationController::class, 'reject_organization']);
 
 
     //?INFORMATION => THE FOLLOWING API HAS TO WITH THE ADMIN SETTINGS
