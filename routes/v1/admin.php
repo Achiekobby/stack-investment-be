@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminCrowdfundingOperationsController;
 use App\Http\Controllers\Admin\AdminOrganizationController;
 use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\Admin\AdminWithdrawalRequestController;
+use App\Http\Controllers\Admin\AdminP2PTransactionController;
 
 
 
@@ -71,5 +72,7 @@ Route::group(['prefix'=>'admin'],function(){
     //? WITHDRAWAL REQUESTS
     Route::get("withdrawal_request/pending",[AdminWithdrawalRequestController::class,'pending_withdrawal_requests']);
     Route::post("withdrawal_request/change_status",[AdminWithdrawalRequestController::class,'change_withdrawal_request_status']);
+
+    Route::get("/group/withdrawal/request",[AdminP2PTransactionController::class,"payout_request"]);
 });
 ?>
