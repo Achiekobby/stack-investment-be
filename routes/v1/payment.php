@@ -13,5 +13,8 @@ Route::group(['prefix'=>'user/payment'],function(){
     //Tip:: Contribute to a scheme
     Route::post("group/contribute",[P2PTransactionController::class,"member_contribute"]);
 
+    //Tip:: Extract all the contributions made for a specific group
+    Route::get("group/contributions/{group_uuid}",[P2PTransactionController::class,"list_all_group_contributions"]);
+
 });
 ?>

@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\ContributionCycle;
 use App\Models\Organization;
 
+//* Resources
+use App\Http\Resources\General\ContributionResource;
+
 //* Utilities
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
@@ -86,6 +89,46 @@ class P2PTransactionController extends Controller
     }
 
     //TODO=> LISTING ALL THE CONTRIBUTIONS OF A GROUP ONLY ACCESSIBLE TO THE GROUP ADMIN
+    public function list_all_group_contributions($group_uuid){
+        try{
+            //* extract the details of the logged in user
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'Sorry, User not found !!'],404);
+            }
+
+            $group =  Organization::query()->where('unique_id',$group_uuid)->first();
+            if(!$group){
+                return response()->json(['status'=>'failed','message'=>'Sorry, Group not found!!'],404);
+            }
+
+            //* checking to see if the group admin is the currently logged in user
+            $is_group_admin = $group->members()->where('user_id',$user->id)->first();
+            if(!$is_group_admin || $is_group_admin->role !=="group_admin"){
+                return response()->json(['status'=>'failed','message'=>'You must be a member and group admin of this group to view this data!!'],400);
+            }
+
+            //* extracting all the contributions made for this group
+            $contributions = ContributionCycle::join("contributions","contributions.contribution_cycle_id","=","contribution_cycles.id")
+                                                ->where("contribution_cycles.organization_id","=",$group->id)
+                                                ->where('contributions.payment_status',"paid")
+                                                ->select(
+                                                    "contributions.id",
+                                                    "contributions.amount",
+                                                    "contributions.payment_status",
+                                                    "contributions.user_id",
+                                                    "contributions.amount",
+                                                    "contributions.payment_status",
+                                                    "contributions.payment_date",
+                                                    "contribution_cycles.organization_id",
+                                                    "contribution_cycles.cycle_number"
+                                                )->get();
+            return response()->json(['status'=>'success','all_contributions'=>ContributionResource::collection($contributions)],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
 
     //TODO=> LISTING ALL THE CONTRIBUTIONS MADE MY ANY MEMBER OF THE GROUP. THIS IS ACCESSIBLE TO BOTH ADMIN AND OTHER MEMBERS OF THE GROUP
 
