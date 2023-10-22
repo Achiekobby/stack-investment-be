@@ -1380,6 +1380,41 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Get(
+        * path="/api/v1/user/payment/make/withdrawal/request/{group_uuid}",
+        * operationId="GroupAdminMakeWithdrawalRequestForGroupCycle",
+        * tags={"P2P Group Payment Operations"},
+        * summary="Group Admin making a request for withdrawal when a cycle in a group is matured",
+        * description="Group Admin making a request for withdrawal when a cycle in a group is matured",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully requested for withdrawal",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="Great, Your request has been sent to Stacks Investment Team and pending Processing!!"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
         * path="/api/v1/user/group/invitations/{group_unique_id}",
         * operationId="ExtractGroupInvitationsForAUser",
         * tags={"P2P group Operations"},

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("cycle_number")->nullable();
             $table->string("group_admin_name")->nullable();
             $table->unsignedBigInteger("payment_method_id")->nullable();
+            $table->unsignedBigInteger("status")->default("processing");
             $table->timestamps();
         });
     }

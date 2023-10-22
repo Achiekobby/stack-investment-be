@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 //* Models
 use App\Models\ContributionCycle;
 use App\Models\Organization;
+use App\Models\GroupWithdrawalRequest;
 
 //* Resources
 use App\Http\Resources\General\ContributionResource;
@@ -169,9 +170,59 @@ class P2PTransactionController extends Controller
     }
 
     //TODO=> MAKING A WITHDRAWAL REQUEST TO THE ADMIN
-    public function withdrawal_request(){
+    public function withdrawal_request($group_uuid){
         try{
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'Sorry, User not found !!'],404);
+            }
 
+            $group = Organization::query()->where('unique_id',$group_uuid)->first();
+            if(!$group){
+                return response()->json(['status'=>'failed','message'=>'Sorry, Group not found!!',404]);
+            }
+
+            //* making sure the user making the request is a group admin for the specified group.
+            $is_group_admin = $group->members()->where('user_id',$user->id)->first()->role === "group_admin" ? true : false;
+            if(!$is_group_admin){
+                return response()->json(['status'=>'failed','message'=>'Sorry, you must be a group admin to request a withdrawal'],400);
+            }
+
+            //* checking if the group admin have inserted a valid recipient code
+            $has_payout_method = $user->payout_methods()->where('user_id',$user->id)->where('status','active')->first();
+            if(!$has_payout_method){
+                return response()->json(['status'=>'failed','message'=>'You must first provide a payout method to continue this process.'],400);
+            }
+
+            //* check is there is a valid contribution cycle
+            $cycle_valid = ContributionCycle::query()->where('organization_id',$group->id)->where('payment_status','unpaid')->where('cycle_status','ongoing')->first();
+            if($cycle_valid->payment_amount !== $cycle_valid->amount_contributed){
+                return response()->json(['status'=>'failed','message'=>'Sorry, Cycle is not matured for withdrawal. Please make sure all parties have contributed fully for this cycle'],400);
+            }
+
+
+            //* make an entry for the request
+            $new_request = GroupWithdrawalRequest::query()->updateOrCreate(
+                [
+                    "organization_id"   =>$group->id,
+                    "cycle_number"      =>$cycle_valid->cycle_number,
+                    "user_id"           =>$user->id,
+                    "status"            =>"processing"
+                ],
+                [
+                "user_id"           =>$user->id,
+                "organization_id"   =>$group->id,
+                "amount_to_withdraw"=>number_format((float)$cycle_valid->payment_amount,2,'.',''),
+                "group_admin_name"  =>Str::title($user->first_name." ".$user->last_name),
+                "cycle_number"      =>$cycle_valid->cycle_number,
+                "payment_method_id"=>$has_payout_method->id
+            ]);
+            if($new_request){
+                return response()->json(['status'=>'success','message'=>'Great, Your request has been sent to Stacks Investment Team and pending Processing!!.'],200);
+            }
+            else{
+                return response()->json(['status'=>'failed','message'=>'Sorry, This process failed, Please try again!!'],400);
+            }
         }catch(\Exception $e){
             return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
         }
@@ -282,7 +333,5 @@ class P2PTransactionController extends Controller
             return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
         }
     }
-
-    //TODO=> COMPUTING THE TOTAL PAYOUT FOR LOGGED IN USER FOR A GROUP THEY JOIN AND THE TOTAL ARREARS IF ANY
 
 }

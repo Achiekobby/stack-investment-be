@@ -3093,6 +3093,81 @@
                 }
             }
         },
+        "/api/v1/user/payment/make/withdrawal/request/{group_uuid}": {
+            "get": {
+                "tags": [
+                    "P2P Group Payment Operations"
+                ],
+                "summary": "Group Admin making a request for withdrawal when a cycle in a group is matured",
+                "description": "Group Admin making a request for withdrawal when a cycle in a group is matured",
+                "operationId": "GroupAdminMakeWithdrawalRequestForGroupCycle",
+                "responses": {
+                    "200": {
+                        "description": "Successfully requested for withdrawal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Great, Your request has been sent to Stacks Investment Team and pending Processing!!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/v1/user/group/invitations/{group_unique_id}": {
             "get": {
                 "tags": [
