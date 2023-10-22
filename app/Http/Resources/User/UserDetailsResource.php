@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 use App\Http\Resources\User\PaymentMethodsResource;
+use App\Http\Resources\General\PayoutResource;
 
 class UserDetailsResource extends JsonResource
 {
@@ -27,7 +28,8 @@ class UserDetailsResource extends JsonResource
             'email'         =>$this->email,
             'phone_number'  =>$this->phone_number,
             'email_verified_at'=>$this->email_verified_at,
-            'payout_methods'=>PaymentMethodResource::collection($this->payment_methods->where('status','active'))
+            'payout_methods'=>PaymentMethodResource::collection($this->payment_methods->where('status','active')),
+            'momo_payout_method'=>PayoutResource::collection($this->payout_methods->where('status','active'))
         ];
     }
 }

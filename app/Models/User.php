@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Models\OrganizationMember;
 use App\Models\PaymentMethod;
 use App\Models\WithdrawalRequest;
+use App\Models\PayoutMethod;
 
 class User extends Authenticatable
 {
@@ -76,5 +77,9 @@ class User extends Authenticatable
 
     public function withdrawal_requests(){
         return $this->hasMany(WithdrawalRequest::class);
+    }
+
+    public function payout_methods(){
+        return $this->hasMany(PayoutMethod::class);
     }
 }

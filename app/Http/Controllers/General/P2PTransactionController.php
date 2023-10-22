@@ -11,6 +11,7 @@ use App\Models\Organization;
 
 //* Resources
 use App\Http\Resources\General\ContributionResource;
+use App\Http\Resources\General\PayoutResource;
 
 //* Utilities
 use Illuminate\Support\Facades\Validator;
@@ -168,8 +169,119 @@ class P2PTransactionController extends Controller
     }
 
     //TODO=> MAKING A WITHDRAWAL REQUEST TO THE ADMIN
+    public function withdrawal_request(){
+        try{
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
 
     //TODO=> GROUP ADMIN ADDING A PAYOUT METHOD(PREFERABLY A MOMO NUMBER) WHICH WILL BE ASSOCIATED TO THE GROUP ADMIN ACCOUNT.
+    public function make_momo_payment_method(){
+        try{
+            $rules = [
+                "name"      =>"required|string",
+                "number"    =>"required|string",
+                "provider"  =>"required|string",
+            ];
+
+            $validation = Validator::make(request()->all(),$rules);
+            if($validation->fails()){
+                return response()->json(['status'=>'failed','message'=>$validation->errors()->first()],200);
+            }
+
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'Sorry, user not found'],404);
+            }
+
+            //* extract the name for the mobile number provided and compare to the entered one.
+            $momo_number_valid = Http::withToken(config('services.paystack.secret_key'))
+                                        ->get(config('services.payment_url.paystack')."/bank/resolve?account_number=".request()->number."&bank_code=".request()->provider)
+                                        ->json();
+            if(!$momo_number_valid["status"]){
+                return response()->json(['status'=>'failed','message'=>"The number provided is not a valid momo number, Please your number and try again"],400);
+            }
+            $input_name = strtolower(request()->name);
+            $extracted_name = strtolower($momo_number_valid["data"]["account_name"]);
+
+            $name_check_1 = preg_replace('/\s+/','',$input_name);
+            $name_check_2 = preg_replace('/\s+/','',$extracted_name);
+
+            $similarity_percentage =0;
+            similar_text($name_check_1, $name_check_2, $similarity_percentage);
+            if($similarity_percentage<50){
+                return response()->json(['status'=>'success','message'=>'The name provided for this number is not valid, Please try again!!'],422);
+            }
+
+            //* create a transfer recipient in paystack
+            $data = [
+                "type"          =>"mobile_money",
+                "name"          =>$extracted_name,
+                "account_number"=>request()->number,
+                "bank_code"     =>request()->provider,
+                "currency"      =>"GHS"
+            ];
+
+            $url    = config('services.payment_url.paystack')."/transferrecipient";
+            $token  = config('services.paystack.secret_key');
+
+            $transfer_recipient = Http::withToken($token)->post($url, $data)->json();
+
+            if($transfer_recipient){
+                $provider = "MTN";
+                if(request()->provider === "VOD"){
+                    $provider = "Vodafone";
+                }
+                else if(request()->provider === "ATL"){
+                    $provider = "AirtelTigo";
+                }
+
+                $payout_method = $user->payout_methods()->updateOrCreate(
+                    [
+                        "momo_number"=>request()->number
+                    ],
+                    [
+                        'account_name'  =>$momo_number_valid["data"]["account_name"],
+                        "momo-number"   =>request()->number,
+                        "momo_provider" =>$provider,
+                        "recipient_code"=>$transfer_recipient["data"]["recipient_code"],
+                        "method"        =>"mobile_money",
+                        "currency"      =>"GHS",
+                        "status"        =>"active"
+                    ]
+                );
+
+                //*making previous payout methods inactive
+                $existing_payout_method = $user->payout_methods()->where("momo_number",request()->number)
+                                                                    ->where('user_id',$user->id)
+                                                                    ->where('id','!=',$payout_method->id)
+                                                                    ->latest()
+                                                                    ->first();
+                if($existing_payout_method && $existing_payout_method->status ==="active"){
+                    $existing_payout_method->update(['status'=>'inactive']);
+                }
+
+                if($payout_method){
+                    return response()->json([
+                        "status"=>"success",
+                        "message"=>"Great, you payout method has been added successfully",
+                        "payout_method"=>new PayoutResource($payout_method)
+                    ]);
+                }
+                else{
+                    return response()->json([
+                        "status"=>"failed",
+                        "message"=>"Sorry, payment method creation encountered a problem. Please try again",
+                    ]);
+                }
+            }
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
 
     //TODO=> COMPUTING THE TOTAL PAYOUT FOR LOGGED IN USER FOR A GROUP THEY JOIN AND THE TOTAL ARREARS IF ANY
 

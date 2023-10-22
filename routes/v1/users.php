@@ -8,6 +8,7 @@ use  App\Http\Controllers\Auth\UserAuthenticationController;
 //* User Operations Controller
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\General\P2PTransactionController;
 
 Route::group(['prefix'=>'user'],function(){
 
@@ -34,6 +35,9 @@ Route::group(['prefix'=>'user'],function(){
 
     //Tip:: Add a payment method
     Route::post("payment_method/create",[UserProfileController::class,"create_payment_method"]);
+
+    //Tip:: Payout method creation
+    Route::post("payout/medium/create",[P2PTransactionController::class,"make_momo_payment_method"]);
 
     //Tip:: Making a withdrawal request
     Route::post("withdrawal/request/create",[UserController::class,"make_withdrawal_request"]);
