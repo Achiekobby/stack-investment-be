@@ -1219,8 +1219,8 @@ use Illuminate\Routing\Controller as BaseController;
         * ),
                 *),
         * @OA\Get(
-        * path="/api/v1/user/payment/group/contributions/{group_uuid}",
-        * operationId="ExtractAllContributionsOfAGroup",
+        * path="/api/v1/user/group/active/all",
+        * operationId="ExtractActiveP2PGroupProjects",
         * tags={"P2P group Operations"},
         * summary="Extract all active P2P groups a logged in user has been part of regardless of whether it has been closed or not",
         * description="Extract all active P2P groups a logged in user has been part of regardless of whether it has been closed or not",
@@ -1255,11 +1255,46 @@ use Illuminate\Routing\Controller as BaseController;
 
 
         * @OA\Get(
-        * path="/api/v1/user/group/active/all",
-        * operationId="ExtractActiveP2PGroupProjects",
+        * path="/api/v1/user/payment/group/contributions/{group_uuid}",
+        * operationId="ExtractAllContributionsOfAGroup",
         * tags={"P2P Group Payment Operations"},
         * summary="Extract all contributions for a specified group using the route parameter group_uuid",
         * description="Extract all contributions for a specified group using the route parameter group_uuid",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully Extracted all contributions for a specified group using the route parameter group_uuid",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="all_contributions",type="string", example="all_contributions:{uuid:...}"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/user/payment/group/contribution/list/{group_uuid}",
+        * operationId="ExtractAllContributionsOfAGroupMadeByUser",
+        * tags={"P2P Group Payment Operations"},
+        * summary="Extract all contributions for a specified group using the route parameter group_uuid which was made by the logged in user",
+        * description="Extract all contributions for a specified group using the route parameter group_uuid which was made by the logged in user",
 
         *      @OA\Response(
         *          response=200,

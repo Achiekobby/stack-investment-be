@@ -2817,6 +2817,156 @@
                 }
             }
         },
+        "/api/v1/user/payment/group/contributions/{group_uuid}": {
+            "get": {
+                "tags": [
+                    "P2P Group Payment Operations"
+                ],
+                "summary": "Extract all contributions for a specified group using the route parameter group_uuid",
+                "description": "Extract all contributions for a specified group using the route parameter group_uuid",
+                "operationId": "ExtractAllContributionsOfAGroup",
+                "responses": {
+                    "200": {
+                        "description": "Successfully Extracted all contributions for a specified group using the route parameter group_uuid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "all_contributions": {
+                                            "type": "string",
+                                            "example": "all_contributions:{uuid:...}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/payment/group/contribution/list/{group_uuid}": {
+            "get": {
+                "tags": [
+                    "P2P Group Payment Operations"
+                ],
+                "summary": "Extract all contributions for a specified group using the route parameter group_uuid which was made by the logged in user",
+                "description": "Extract all contributions for a specified group using the route parameter group_uuid which was made by the logged in user",
+                "operationId": "ExtractAllContributionsOfAGroupMadeByUser",
+                "responses": {
+                    "200": {
+                        "description": "Successfully Extracted all contributions for a specified group using the route parameter group_uuid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "all_contributions": {
+                                            "type": "string",
+                                            "example": "all_contributions:{uuid:...}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during the processing of the request=>Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "project": {
+                                            "type": "string",
+                                            "example": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not logged into the application yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/v1/user/group/invitations/{group_unique_id}": {
             "get": {
                 "tags": [

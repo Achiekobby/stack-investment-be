@@ -131,6 +131,41 @@ class P2PTransactionController extends Controller
     }
 
     //TODO=> LISTING ALL THE CONTRIBUTIONS MADE MY ANY MEMBER OF THE GROUP. THIS IS ACCESSIBLE TO BOTH ADMIN AND OTHER MEMBERS OF THE GROUP
+    public function user_contributions($group_uuid){
+        try{
+            //* extract the details of the logged in user
+            $user = auth()->guard('api')->user();
+            if(!$user){
+                return response()->json(['status'=>'failed','message'=>'Sorry, User not found !!'],404);
+            }
+
+            $group =  Organization::query()->where('unique_id',$group_uuid)->first();
+            if(!$group){
+                return response()->json(['status'=>'failed','message'=>'Sorry, Group not found!!'],404);
+            }
+
+            //* extracting all the contributions made for this group
+            $contributions = ContributionCycle::join("contributions","contributions.contribution_cycle_id","=","contribution_cycles.id")
+                                                ->where("contribution_cycles.organization_id","=",$group->id)
+                                                ->where('contributions.payment_status',"paid")
+                                                ->where("contributions.user_id",$user->id)
+                                                ->select(
+                                                    "contributions.id",
+                                                    "contributions.amount",
+                                                    "contributions.payment_status",
+                                                    "contributions.user_id",
+                                                    "contributions.amount",
+                                                    "contributions.payment_status",
+                                                    "contributions.payment_date",
+                                                    "contribution_cycles.organization_id",
+                                                    "contribution_cycles.cycle_number"
+                                                )->get();
+            return response()->json(['status'=>'success','user_contributions'=>ContributionResource::collection($contributions)],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
 
     //TODO=> MAKING A WITHDRAWAL REQUEST TO THE ADMIN
 

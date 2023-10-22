@@ -16,5 +16,8 @@ Route::group(['prefix'=>'user/payment'],function(){
     //Tip:: Extract all the contributions made for a specific group
     Route::get("group/contributions/{group_uuid}",[P2PTransactionController::class,"list_all_group_contributions"]);
 
+    //Tip:: Extract all the contributions a user has made for a specified group
+    Route::get("group/contribution/list/{group_uuid}",[P2PTransactionController::class,"user_contributions"]);
+
 });
 ?>
