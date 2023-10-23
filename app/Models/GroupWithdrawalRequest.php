@@ -15,7 +15,8 @@ class GroupWithdrawalRequest extends Model
         "amount_to_withdraw",
         "cycle_number",
         "group_admin_name",
-        "payment_method_id"
+        "payment_method_id",
+        "status"
     ];
 
     public function organization(){

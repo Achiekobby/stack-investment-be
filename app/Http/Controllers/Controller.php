@@ -1450,6 +1450,112 @@ use Illuminate\Routing\Controller as BaseController;
                 *),
 
         * @OA\Get(
+        * path="/api/v1/admin/group/manual/payout/{withdrawal_request_id}",
+        * operationId="AdminRecordManualPayoutForGroup",
+        * tags={"P2P Group Payment Operations"},
+        * summary="Admin recording a payout which was done manually without the intervention of the application",
+        * description="Admin recording a payout which was done manually without the intervention of the application",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully recorded the payout for specified withdrawal",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="message",type="string", example="message:Great, You have recorded a manual payout for this withdrawal request"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+        * @OA\Get(
+        * path="/api/v1/admin/group/payouts",
+        * operationId="AdminExtractPayouts",
+        * tags={"P2P Group Payment Operations"},
+        * summary="Admin extracting all  payouts which was done in the system",
+        * description="Admin extracting all  payouts which was done in the system",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved the payouts recorded in the system",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="payouts",type="string", example="payouts:[id:...]"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+         * @OA\Get(
+        * path="/api/v1/admin/group/completed/payouts/{group_uuid}",
+        * operationId="AdminExtractGroupPayouts",
+        * tags={"P2P Group Payment Operations"},
+        * summary="Admin extracting all  payouts which was done in the system for a group",
+        * description="Admin extracting all  payouts which was done in the system for a specific group",
+
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successfully retrieved the payouts recorded in the system for the specified group",
+        *          @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="success"),
+        *              @OA\Property(property="payouts",type="string", example="payouts:[id:...]"),
+        *           ),
+        *       ),
+        *      @OA\Response(
+        *          response=400,
+        *          description="Error during the processing of the request=>Bad request",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="project",type="string", example="Bad Request"),
+        *           ),
+        *       ),
+        *       @OA\Response(
+        *          response=404,
+        *          description="User has not logged into the application yet",
+                    @OA\JsonContent(
+        *              @OA\Property(property="status",type="string", example="failed"),
+        *              @OA\Property(property="message",type="string", example="User not found"),
+        *           ),
+        *       ),
+        *      @OA\Response(response=500, description="Internal server error"),
+        * ),
+                *),
+
+
+        * @OA\Get(
         * path="/api/v1/user/group/invitations/{group_unique_id}",
         * operationId="ExtractGroupInvitationsForAUser",
         * tags={"P2P group Operations"},

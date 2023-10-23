@@ -74,5 +74,14 @@ Route::group(['prefix'=>'admin'],function(){
     Route::post("withdrawal_request/change_status",[AdminWithdrawalRequestController::class,'change_withdrawal_request_status']);
 
     Route::get("/group/withdrawal/request",[AdminP2PTransactionController::class,"payout_request"]);
+
+    //Tip:: Extract all the payouts admins have initiated
+    Route::get("group/payouts",[AdminP2PTransactionController::class,"extract_group_payouts"]);
+
+    //Tip:: Recording a manual payout
+    Route::get("group/manual/payout/{withdrawal_request}",[AdminP2PTransactionController::class,"finalize_payout"]);
+
+    //Tip:: Extract the payouts for a specified group
+    Route::get("group/completed/payouts/{group_uuid}",[AdminP2PTransactionController::class,"group_payouts"]);
 });
 ?>

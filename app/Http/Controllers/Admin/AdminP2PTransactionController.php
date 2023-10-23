@@ -11,13 +11,17 @@ use App\Models\GroupPayout;
 use App\Models\User;
 use App\Models\Organization;
 use App\Models\PayoutMethod;
+use App\Models\OrganizationPayoutRecord;
+use App\Models\ContributionCycle;
 
 //* Resources
 use App\Http\Resources\Admin\GroupPayoutRequestResource;
+use App\Http\Resources\Admin\AdminPayoutsResource;
 
 //* utilities
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 
 class AdminP2PTransactionController extends Controller
@@ -165,23 +169,116 @@ class AdminP2PTransactionController extends Controller
     //     }
     // }
 
-    //TODO=> ADMIN INDICATE A SUCCESSFUL PAYOUT FOR A CYCLE
-    // public function finalize_payout($withdrawal_request){
-    //     try{
-    //         $user =auth()->guard('api')->user();
-    //         if(!$user && ($user->role!=="admin" || $user->role!=="super_admin")){
-    //             return response()->json(['status'=>'failed','message'=>'Sorry, only admins and super admins can access this information'],401);
-    //         }
-    //         $withdraw_request = GroupWithdrawalRequest::where('id',$withdraw_request)->where('status','processing')->first();
-    //         if(!$withdraw_request){
-    //             return response()->json(['status'=>'failed','message'=>'Sorry, This request is not valid'],401);
-    //         }
+    //TODO=> ADMIN INDICATE A SUCCESSFUL PAYOUT FOR A CYCLE MANUALLY
+    public function finalize_payout($withdrawal_request){
+        try{
+            $user =auth()->guard('api')->user();
+            if(!$user && ($user->role!=="admin" || $user->role!=="super_admin")){
+                return response()->json(['status'=>'failed','message'=>'Sorry, only admins and super admins can access this information'],401);
+            }
+            $withdraw_request = GroupWithdrawalRequest::where('id',$withdrawal_request)->where('status','processing')->first();
+            if(!$withdraw_request){
+                return response()->json(['status'=>'failed','message'=>'Sorry, This request is not valid'],401);
+            }
+
+            //* finding the cycle and completing it
+            $contribution_cycle = ContributionCycle::query()->where('organization_id',$withdraw_request->organization_id)
+                                                            ->where('cycle_number',$withdraw_request->cycle_number)
+                                                            ->where('payment_status','unpaid')
+                                                            ->first();
+            if(!$contribution_cycle){
+                return response()->json(['status'=>'failed','message'=>'Sorry,Cycle to make payment for does not exist'],404);
+            }
+
+            //* update the cycle and set the organization to inactive again
+            $contribution_cycle->update(['payment_status'=>'paid',"cycle_status"=>"completed"]);
+
+            //* updating the group details
+            $status = "inactive";
+            $group_details = Organization::where("id",$withdraw_request->organization_id)->first();
+            if($withdraw_request->cycle_number === $group_details->number_of_cycles){
+                $status = "completed";
+            }else{
+                $status="inactive";
+            }
+
+            $group_details->update(['status'=>$status]);
+
+            //* updating the group member benefit status
+            $group_details->members()->where("user_id",$contribution_cycle->recipient_id)->update(['received_benefit'=>"true"]);
+
+            //* update the withdrawal entry to completed
+            $withdraw_request->update(['status'=>'completed']);
+
+            //* create an entry for the payments inside the group payout records table
+            $new_payout = OrganizationPayoutRecord::query()->create([
+                "admin_id"=>$user->id,
+                "uuid"=>Str::uuid(),
+                "withdrawal_request_id"=>$withdraw_request->id,
+                "recipient_id"=>$contribution_cycle->recipient_id,
+                "amount_payable"=>$withdraw_request->amount_to_withdraw,
+                "status"=>"finalized",
+                "initialized_at"=>Carbon::now()->format("Y-m-d H:i:s"),
+                "finalized_at"=>Carbon::now()->format("Y-m-d H:i:s")
+            ]);
+
+            return response()->json(['status'=>'success','message'=>'Great, You have recorded a manual payout for this withdrawal request'],200);
 
 
-    //     }catch(\Exception $e){
-    //         return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
-    //     }
-    // }
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
+    //TODO=> Extract all the Group Payout Record
+    public function extract_group_payouts(){
+        try{
+            $user = auth()->guard('api')->user();
+            if(!$user && ($user->role!=="admin" || $user->role!=="super_admin")){
+                return response()->json(['status'=>'failed','message'=>'Sorry, only admins and super admins can access this information'],401);
+            }
+            $manual_records     = AdminPayoutsResource::collection(OrganizationPayoutRecord::query()->where('status','finalized')->get());
+            $automatic_records  = AdminPayoutsResource::collection(GroupPayout::query()->where('status','finalized')->get());
+
+            //* merge the two
+            $records = $manual_records->merge($automatic_records);
+
+            return response()->json(['status'=>'success','payouts'=>$records],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
+
+    //TODO=>PULLING ALL THE PAYOUTS PERTAINING TO A SPECIFIED GROUP
+    public function group_payouts($group_uuid){
+        try{
+
+            $user = auth()->guard('api')->user();
+            if(!$user && ($user->role!=="admin" || $user->role!=="super_admin")){
+                return response()->json(['status'=>'failed','message'=>'Sorry, only admins and super admins can access this information'],401);
+            }
+
+            //* Extract Group
+            $group =Organization::query()->where("unique_id",$group_uuid)->first();
+            if(!$group){
+                return response()->json(['status'=>'failed','message'=>'Sorry, This group does not exist'],404);
+            }
+
+            $withdrawal_request_ids = GroupWithdrawalRequest::where("status","completed")->where("organization_id",$group->id)->pluck("id");
+
+            //* getting corresponding payouts
+            $manual_payouts= AdminPayoutsResource::collection(OrganizationPayoutRecord::query()->whereIn("withdrawal_request_id",$withdrawal_request_ids)->get());
+            $automated_payouts= AdminPayoutsResource::collection(GroupPayout::query()->whereIn("withdrawal_request_id",$withdrawal_request_ids)->get());
+
+            //* merge the two
+            $records = $manual_payouts->merge($automated_payouts);
+            return response()->json(['status'=>'success','payouts'=>$records],200);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()],500);
+        }
+    }
 
 
     //TODO=> RESEND THE OTP FOR THE PAYOUT IN THE EVENT THAT AN OTP IS ACTIVATED IN PAYSTACK FOR THE TRANSFER OF FUNDS
