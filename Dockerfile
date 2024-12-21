@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y \
     php-pear \
     php-bcmath \
     curl \
-    unzip
+    unzip \ 
+    nano
 
 # Install MySQL
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server
