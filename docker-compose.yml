@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: stacksapp
+        container_name: stacks-be
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www/
+        ports:
+            - "80:80"
+        volumes:
+            - .:/var/www/html
+            - ./public:/var/www/public
+        networks:
+            - appnet
+
+    db:
+        image: mariadb:latest
+        container_name: stacks-db
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: stacksdb
+            MYSQL_USER: root
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: rootpassword
+        volumes:
+            - dbdata:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - appnet
+
+volumes:
+    dbdata:
+
+networks:
+    appnet:
+        driver: bridge

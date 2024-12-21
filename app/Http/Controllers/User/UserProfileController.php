@@ -46,7 +46,7 @@ class UserProfileController extends Controller
             }
 
             //* create new account entry for the user
-            $new_payment_method;
+            $new_payment_method = null;
             if($req->validated()['account_type']==="bank"){
                 $new_payment_method = $user->payment_methods()->create([
                     "account_number"=>$req->validated()['account_number'],
